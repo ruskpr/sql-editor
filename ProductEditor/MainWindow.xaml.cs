@@ -23,7 +23,6 @@ namespace ProductEditor
         public MainWindow()
         {
             InitializeComponent();
-            
         }
     }
 }

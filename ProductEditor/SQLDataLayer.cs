@@ -93,23 +93,26 @@ namespace ProductEditor
         }
 
 
-        public List<string> LoadRecords()
+        public List<string> LoadRecords(string tablename)
         {
             List<string> records = new List<string>();
             SqlConnection conn = new SqlConnection(connectionString);
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("select * from chat", conn);
+                SqlCommand cmd = new SqlCommand($"select * from {tablename}", conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    if (reader[2].ToString() != "")
+                    string line = "";
+
+                    for (int i = 0; i < length; i++)
                     {
-                        string currentMsg = $"{reader[0]} {reader[2]}";
-                        records.Add(currentMsg);
+                        line += reader[i]
                     }
+                    string currentMsg = $"{reader[0]} {reader[2]}";
+                    records.Add(line);
                 }
             }
             catch

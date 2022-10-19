@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Azure.Identity;
 using Microsoft.Data.SqlClient;
 
@@ -107,9 +108,10 @@ namespace ProductEditor
                 {
                     string line = "";
 
-                    for (int i = 0; i < length; i++)
+                    for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        line += reader[i]
+                        MessageBox.Show(reader.FieldCount.ToString());
+                        //line += reader[i];
                     }
                     string currentMsg = $"{reader[0]} {reader[2]}";
                     records.Add(line);

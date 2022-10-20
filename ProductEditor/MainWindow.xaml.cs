@@ -24,6 +24,7 @@ namespace ProductEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<Control> tableSelectionControls = new List<Control>();
         private SQLDataLayer dataLayer;
         public MainWindow()
         {
@@ -35,6 +36,14 @@ namespace ProductEditor
 
             dgRecords.AutoGenerateColumns = true;
             dgRecords.CanUserAddRows = false;
+
+            tableSelectionControls.Add(lblSelectTable);
+            tableSelectionControls.Add(cbTables);
+            tableSelectionControls.Add(btnLoadRecords);
+
+            foreach (var item in tableSelectionControls)
+                item.Visibility = Visibility.Hidden;
+
         }
 
         #region Delegate from connect window
@@ -51,10 +60,11 @@ namespace ProductEditor
                 cbTables.Items.Clear();
                 foreach (string table in this.dataLayer.GetTables())
                     cbTables.Items.Add(table);
-                    
+
 
                 //DisplayRecords();
-
+                foreach (var item in tableSelectionControls)
+                    item.Visibility = Visibility.Visible;
 
             }
         }
@@ -68,6 +78,8 @@ namespace ProductEditor
                 {
                     dgRecords.Columns.Add(item);
                 }
+
+                
             }
         }
 

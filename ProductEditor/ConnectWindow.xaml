@@ -1,0 +1,36 @@
+﻿<Window x:Class="ProductEditor.ConnectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProductEditor"
+        mc:Ignorable="d"
+        Title="Connect to an SQL server" Height="250" Width="300">
+    <Grid>
+        <!--Header-->
+        <Label Content="Connect to your server:" HorizontalAlignment="Left" Margin="41,6,0,0" VerticalAlignment="Top"/>
+
+        <!--server name-->
+        <Label Content="server name:" HorizontalAlignment="Left" Margin="41,37,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbServerName" HorizontalAlignment="Left" Margin="141,41,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" TabIndex="0"/>
+
+        <!--database name-->
+        <Label Content="database name:" HorizontalAlignment="Left" Margin="41,67,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbDBName" HorizontalAlignment="Left" Margin="141,70,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" TabIndex="0"/>
+
+        <!--server name-->
+        <Label Content="user id:" HorizontalAlignment="Left" Margin="41,96,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbUserID" HorizontalAlignment="Left" Margin="141,99,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" TabIndex="0"/>
+
+        <!--User id-->
+        <Label Content="password:" HorizontalAlignment="Left" Margin="41,125,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbPassword" HorizontalAlignment="Left" Margin="141,128,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" TabIndex="0"/>
+        <!--Password-->
+
+        <!--buttons-->
+        <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="190,179,0,0" VerticalAlignment="Top" Width="80" Click="btnConnect_Click"/>
+        <Button x:Name="btnDefaultValues" Content="Default Values" HorizontalAlignment="Left" Margin="33,179,0,0" VerticalAlignment="Top" Width="93" Click="btnDefaultValues_Click" />
+        <Label x:Name="lblChecking" Visibility="Visible" Content="Checking for connection..." HorizontalAlignment="Center" Margin="0,151,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

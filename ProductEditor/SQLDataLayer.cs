@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,32 +14,39 @@ namespace ProductEditor
 {
     public class SQLDataLayer
     {
-        //public string connectionString;
-        string connectionString;
-        public SQLDataLayer(string connString = "")
+        #region Public properties
+        public string ServerName { get; set; }
+        public string DBName { get; set; }
+        public string UserID { get; set; }
+        public string Password { get; set; }
+        #endregion
+
+        private string connectionString;
+        public SQLDataLayer(string servername, string dbName, string userid, string password)
         {
-            // if param is blank, use connection string from config
-            if (connString == "")
-                connectionString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
-            else // otherwise use your own string
-                connectionString = connString;
+            ServerName = servername;
+            DBName = dbName;
+            UserID = userid;
+            Password = password;
+
+            //connectionString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
+            connectionString = $"server={ServerName};database={DBName};user id={UserID};password={Password};encrypt=false;";
         }
 
-
-        //ExecuteNonQuery
-        private bool ExecuteNonQuery(string qry)
+        //Checks if it is able to connect
+        public bool CheckConnection()
         {
-            bool ret = true;
+            bool ret = false;
             SqlConnection conn = new SqlConnection(connectionString);
 
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(qry, conn);
-                cmd.ExecuteNonQuery();
+                ret = true;
             }
-            catch
+            catch (Exception)
             {
+
                 ret = false;
             }
             finally
@@ -47,6 +55,32 @@ namespace ProductEditor
             }
 
             return ret;
+        }
+        public override string ToString()
+        {
+            return $"server = '{ServerName}', database = '{DBName}'";
+        }
+
+        //ExecuteNonQuery
+        public string ExecuteNonQuery(string qry)
+        {
+;
+            SqlConnection conn = new SqlConnection(connectionString);
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                return cmd.ExecuteNonQuery().ToString();
+            }
+            catch
+            {
+                return "failed";
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         private object ExecuteScalar(string qry)
@@ -69,27 +103,6 @@ namespace ProductEditor
                 conn.Close();
             }
 
-            return ret;
-        }
-
-        public bool RegisterUser(string username, string password)
-        {
-            string cmd = $"insert into users (username, password, register_date) values ({username}, {password}, getdate())";
-
-            return this.ExecuteNonQuery(cmd);
-        }
-
-        public bool LoginUser(string username, string password)
-        {
-            int count = (int)this.ExecuteScalar($"select count(*) from users where username = '{username}' and password = '{password}'");
-            return count == 1;
-        }
-
-        public bool SendMessage(string msg)
-        {
-            bool ret = true;
-            string qry = $"insert into chat values ('{msg}', getdate(), '{msg}'";
-            ret = ExecuteNonQuery(msg);
             return ret;
         }
 

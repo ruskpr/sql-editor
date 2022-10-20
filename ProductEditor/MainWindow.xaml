@@ -7,18 +7,23 @@
         mc:Ignorable="d"
         Title="SQL Data Editor" Height="750" Width="900">
     <Grid Margin="0,0,0,0" Background="White">
-        <!--Top Header-->
-        <Label Content="Table name:" HorizontalAlignment="Left" Margin="243,12,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbTableName" HorizontalAlignment="Left" Margin="321,16,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" TabIndex="1"/>
-        <Label Content="Database name:" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbDatabaseName" HorizontalAlignment="Left" Margin="110,16,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" TabIndex="0"/>
-        <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="474,16,0,0" VerticalAlignment="Top" Width="90"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="53*"/>
+            <ColumnDefinition Width="47*"/>
+        </Grid.ColumnDefinitions>
+        <!--Top content-->
+        <!--Connected to label-->
+        <Label x:Name="lblConnectedTo" Content="[Connected / Not Connected" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
 
+        <!--Connect button-->
+        <Button x:Name="btnConnectWindow" Content="Connect to server" HorizontalAlignment="Left" Margin="266,16,0,0" VerticalAlignment="Top" Width="134" Click="btnConnect_Click" Grid.Column="1"/>
 
-        <DataGrid x:Name="dgRecords" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,46,0,312" Background="LightCyan"/>
-        <GroupBox x:Name="grpEdit" Header="Edit Item" Margin="10,422,10,5"/>
+        <!--Middle content-->
+        <ListBox x:Name="lstTest" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="49,138,110,360"/>
+        <DataGrid x:Name="dgRecords" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="154,279,0,312" Background="LightCyan" Grid.Column="1"/>
+
+        <GroupBox x:Name="grpEdit" Header="Edit Item" Margin="10,422,10,5" Grid.ColumnSpan="2"/>
         <Label Content="Selected Item:" HorizontalAlignment="Left" Margin="49,472,0,0" VerticalAlignment="Top"/>
-        <TextBlock x:Name="tbSelectedItem" HorizontalAlignment="Left" Margin="144,477,0,0" TextWrapping="Wrap" Text="[Item name]" VerticalAlignment="Top"/>
 
 
     </Grid>

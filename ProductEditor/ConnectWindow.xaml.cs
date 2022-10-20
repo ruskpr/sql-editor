@@ -30,20 +30,21 @@ namespace ProductEditor
             InitializeComponent();
         }
 
+        #region Button click events
         private void btnDefaultValues_Click(object sender, RoutedEventArgs e)
         {
             tbServerName.Text = "localhost,1434";
             tbDBName.Text = "Northwind";
             tbUserID.Text = "sa";
             tbPassword.Text = "P@ssword!";
-
         }
 
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
              GetConnection();
         }
-
+        #endregion
+        #region GetConnection method
         /// <summary>
         /// make new instance of SQLDataLayer,
         /// if it connects, pass datalayer to mainform with delegate method,
@@ -71,5 +72,6 @@ namespace ProductEditor
                 MessageBox.Show(ex.ToString()); // throw exception as message box
             }
         }
+        #endregion
     }
 }

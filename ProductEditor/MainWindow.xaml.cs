@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -29,7 +30,7 @@ namespace ProductEditor
 
             ConnectWindow.PassConnection += ConnectWindow_PassConnection;
             
-            lblConnectedTo.Content = "Not connected, click the button to connect to a database";
+            lblCurrentConnection.Content = "Not connected, click the button to connect to a database";
         }
 
         //recieve connection when connected through 'ConnectWindow' 
@@ -39,17 +40,38 @@ namespace ProductEditor
             this.dataLayer = dataLayer;
 
             if (this.dataLayer != null)
-                lblConnectedTo.Content = this.dataLayer.ToString();
-        }
+            {
+                lblCurrentConnection.Content = this.dataLayer.ToString();
 
+                cbTables.Items.Clear();
+                foreach (string table in this.dataLayer.GetTables())
+                    cbTables.Items.Add(table);
+                    
+
+                //DisplayRecords();
+
+
+            }
+        }
+        private void DisplayRecords()
+        {
+
+        }
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
-            //SQLDataLayer dl = new SQLDataLayer();
+            // open connection window to get connection
             ConnectWindow cw = new ConnectWindow();
             cw.Owner = this;
             cw.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             cw.ShowDialog();
-            
+        }
+
+        private void btnLoadRecords_Click(object sender, RoutedEventArgs e)
+        {
+            if(this.dataLayer != null)
+            {
+                
+            }
         }
     }
 }

@@ -9,15 +9,18 @@
         Title="SQL Data Editor" Height="750" Width="900">
     <Grid Margin="0,0,0,0" Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="53*"/>
-            <ColumnDefinition Width="47*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
         </Grid.ColumnDefinitions>
         <!--Top content-->
-        <!--Connected to label-->
-        <Label x:Name="lblConnectedTo" Content="[Connected / Not Connected" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
+        <!--Server connection-->
+        <Label x:Name="lblCurrentConnection" Content="[Connected / Not Connected" HorizontalAlignment="Left" Margin="160,7,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnConnectWindow" Content="Connect to server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Click="btnConnect_Click"/>
 
-        <!--Connect button-->
-        <Button x:Name="btnConnectWindow" Content="Connect to server" HorizontalAlignment="Left" Margin="266,16,0,0" VerticalAlignment="Top" Width="134" Click="btnConnect_Click" Grid.Column="1"/>
+        <!--Table selection-->
+        <Label Content="Select Table:" HorizontalAlignment="Left" Margin="59,7,0,0" VerticalAlignment="Top" Width="96" Grid.Column="1"/>
+        <ComboBox x:Name="cbTables" Grid.Column="1" HorizontalAlignment="Left" Margin="155,8,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnLoadRecords" Grid.Column="1" Content="Load Records" HorizontalAlignment="Left" Margin="302,10,0,0" VerticalAlignment="Top" Width="114" Click="btnLoadRecords_Click"/>
 
         <!--Middle content-->
         <ListBox x:Name="lstTest" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="49,138,110,360"/>
@@ -25,6 +28,10 @@
 
         <GroupBox x:Name="grpEdit" Header="Edit Item" Margin="10,422,10,5" Grid.ColumnSpan="2"/>
         <Label Content="Selected Item:" HorizontalAlignment="Left" Margin="49,472,0,0" VerticalAlignment="Top"/>
+
+
+
+
 
 
     </Grid>

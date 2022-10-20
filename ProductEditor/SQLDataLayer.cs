@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Permissions;
@@ -21,8 +22,8 @@ namespace ProductEditor
         public string UserID { get; set; }
         public string Password { get; set; }
         #endregion
+        public string connectionString { get; set; }
 
-        private string connectionString;
         public SQLDataLayer(string servername, string dbName, string userid, string password)
         {
             ServerName = servername;
@@ -100,6 +101,40 @@ namespace ProductEditor
             return ret;
         }
 
+        public List<string> GetTables()
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"select * from sys.tables", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                List<string> tables = new List<string>();
+
+                int index = 0;
+                while (reader.Read())
+                {
+                    tables.Add((string)reader[0]);
+                    index++;
+                }                 
+
+                return tables;
+            }
+
+
+
+            //DataTable dt = conn.GetSchema("Tables");
+
+
+            //string lineOfTableNames = string.Join(Environment.NewLine, dt.Rows.OfType<DataRow>().Select(x => string.Join(",", x.ItemArray)));
+
+            //string[] arrTableNames = lineOfTableNames.Split(",");
+
+            //string s = conn.GetSchema("Tables").TableName;
+
+            //string[] arrTableNames = new string[];
+
+        }
 
         public List<string> LoadRecords(string tablename)
         {

@@ -30,7 +30,5 @@
         <!--buttons-->
         <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="190,179,0,0" VerticalAlignment="Top" Width="80" Click="btnConnect_Click"/>
         <Button x:Name="btnDefaultValues" Content="Default Values" HorizontalAlignment="Left" Margin="33,179,0,0" VerticalAlignment="Top" Width="93" Click="btnDefaultValues_Click" />
-        <Label x:Name="lblChecking" Visibility="Visible" Content="Checking for connection..." HorizontalAlignment="Center" Margin="0,151,0,0" VerticalAlignment="Top"/>
-
     </Grid>
 </Window>

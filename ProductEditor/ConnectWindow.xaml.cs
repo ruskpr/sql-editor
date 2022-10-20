@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using SQLEditor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,11 +24,10 @@ namespace ProductEditor
     public partial class ConnectWindow : Window
     {
         public static event PassSQLConnectionDel PassConnection;
+                    
         public ConnectWindow()
         {
             InitializeComponent();
-            lblChecking.Visibility = Visibility.Hidden;
-
         }
 
         private void btnDefaultValues_Click(object sender, RoutedEventArgs e)
@@ -35,7 +36,6 @@ namespace ProductEditor
             tbDBName.Text = "Northwind";
             tbUserID.Text = "sa";
             tbPassword.Text = "P@ssword!";
-            lblChecking.Visibility = Visibility.Visible;
 
         }
 
@@ -55,7 +55,7 @@ namespace ProductEditor
 
             try
             {
-                if (dl.CheckConnection()) // if the database is connected...
+                if (dl.IsConnected()) // if the database is connected...
                 {
                     PassConnection.Invoke(dl); // pass the sql connection through delegate (to be used in main window)
                     MessageBox.Show("Connected to: " + dl.ToString());
@@ -63,12 +63,11 @@ namespace ProductEditor
                 }
                 else // if you cant connect...
                 {
-                    MessageBox.Show("Failed to connect.", "Error");
+                    MessageBox.Show("Failed to connect, please try again.", "Error");
                 }
-
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) 
+            { 
                 MessageBox.Show(ex.ToString()); // throw exception as message box
             }
         }

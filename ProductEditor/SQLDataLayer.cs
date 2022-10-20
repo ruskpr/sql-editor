@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Azure.Identity;
 using Microsoft.Data.SqlClient;
+using SQLEditor;
 
 namespace ProductEditor
 {
@@ -34,27 +35,20 @@ namespace ProductEditor
         }
 
         //Checks if it is able to connect
-        public bool CheckConnection()
+        public bool IsConnected()
         {
-            bool ret = false;
-            SqlConnection conn = new SqlConnection(connectionString);
-
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
-                ret = true;
+                try
+                {
+                    conn.Open();
+                    return true;
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
             }
-            catch (Exception)
-            {
-
-                ret = false;
-            }
-            finally
-            {
-                conn.Close();
-            }
-
-            return ret;
         }
         public override string ToString()
         {

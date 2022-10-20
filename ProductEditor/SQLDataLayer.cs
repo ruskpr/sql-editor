@@ -8,6 +8,8 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using Azure.Identity;
 using Microsoft.Data.SqlClient;
 using SQLEditor;
@@ -136,6 +138,33 @@ namespace ProductEditor
 
         }
 
+        public List<DataGridTextColumn> GetFieldNames(string tableName)
+        {
+            //list to be returned
+            List<DataGridTextColumn> columnNames = new List<DataGridTextColumn>();
+
+            //open connection and add field names
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = {tableName}", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+
+                }
+            }
+
+            DataGridTextColumn textColumn = new DataGridTextColumn();
+
+            
+
+            textColumn.Header = "First Name";
+            textColumn.Binding = new Binding("FirstName");
+
+            return columnNames;
+        }
         public List<string> LoadRecords(string tablename)
         {
             List<string> records = new List<string>();

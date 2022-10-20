@@ -44,7 +44,12 @@ namespace ProductEditor
              GetConnection();
         }
 
-        private void GetConnection()
+        /// <summary>
+        /// make new instance of SQLDataLayer,
+        /// if it connects, pass datalayer to mainform with delegate method,
+        /// if not, show error message box
+        /// </summary>
+        private void GetConnection() 
         {
             SQLDataLayer dl = new SQLDataLayer(tbServerName.Text, tbDBName.Text, tbUserID.Text, tbPassword.Text);
 
@@ -52,7 +57,7 @@ namespace ProductEditor
             {
                 if (dl.CheckConnection()) // if the database is connected...
                 {
-                    PassConnection.Invoke(dl); // pass the sql connection through delegate (used in main window)
+                    PassConnection.Invoke(dl); // pass the sql connection through delegate (to be used in main window)
                     MessageBox.Show("Connected to: " + dl.ToString());
                     this.Close(); // close window if connected
                 }

@@ -33,40 +33,8 @@ namespace ProductEditor
             
             lblCurrentConnection.Content = "Not connected, click the button to connect to a database";
 
-
             dgRecords.AutoGenerateColumns = true;
             dgRecords.CanUserAddRows = false;
-
-            DataTable table = new DataTable();
-            table.Columns.Add(new DataColumn("colStatus", typeof(string)));
-            table.Columns.Add("column1");
-            table.Rows.Add("row");
-
-            DataGridTextColumn textColumn = new DataGridTextColumn();
-            textColumn.Header = "First Name";
-            textColumn.Binding = new Binding("FirstName");
-            dgRecords.Columns.Add(textColumn);
-
-
-            dgRecords.DataContext = table;
-
-            foreach (DataRow dataRow in table.Rows)
-            {
-                foreach (var item in dataRow.ItemArray)
-                {
-                    lstTest.Items.Add(item);
-                    
-                }
-            }
-            foreach (DataColumn dataCol in table.Columns)
-            {
-                foreach (var item in dataCol.ColumnName)
-                {
-                    lstTest.Items.Add(item);
-                    
-                }
-            }
-
         }
 
         #region Delegate from connect window
@@ -93,7 +61,14 @@ namespace ProductEditor
         #endregion
         private void DisplayRecords()
         {
-
+            if (this.dataLayer != null)
+            {
+                dgRecords.Columns.Clear();
+                foreach (var item in dataLayer.GetFieldNames(cbTables.Text))
+                {
+                    dgRecords.Columns.Add(item);
+                }
+            }
         }
 
         #region button click events
@@ -108,10 +83,7 @@ namespace ProductEditor
 
         private void btnLoadRecords_Click(object sender, RoutedEventArgs e)
         {
-            if(this.dataLayer != null)
-            {
-                
-            }
+            DisplayRecords();
         }
         #endregion
     }

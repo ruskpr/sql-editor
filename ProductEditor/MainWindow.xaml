@@ -23,8 +23,7 @@
         <Button x:Name="btnLoadRecords" Grid.Column="1" Content="Load Records" HorizontalAlignment="Left" Margin="302,10,0,0" VerticalAlignment="Top" Width="114" Click="btnLoadRecords_Click"/>
 
         <!--Middle content-->
-        <ListBox x:Name="lstTest" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="49,138,110,360"/>
-        <DataGrid x:Name="dgRecords" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="154,279,0,312" Background="LightCyan" Grid.Column="1"/>
+        <DataGrid x:Name="dgRecords" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,48,10,312" Background="LightCyan" Grid.ColumnSpan="2"/>
 
         <GroupBox x:Name="grpEdit" Header="Edit Item" Margin="10,422,10,5" Grid.ColumnSpan="2"/>
         <Label Content="Selected Item:" HorizontalAlignment="Left" Margin="49,472,0,0" VerticalAlignment="Top"/>

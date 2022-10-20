@@ -147,21 +147,19 @@ namespace ProductEditor
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = {tableName}", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}' " +
+                    "AND TABLE_SCHEMA='dbo' ORDER BY ORDINAL_POSITION ASC", conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
+                    DataGridTextColumn column = new DataGridTextColumn();
+                    column.Header = (string)reader[0];
+                    column.Binding = new Binding($"col{(string)reader[0]}");
 
+                    columnNames.Add(column);
                 }
             }
-
-            DataGridTextColumn textColumn = new DataGridTextColumn();
-
-            
-
-            textColumn.Header = "First Name";
-            textColumn.Binding = new Binding("FirstName");
 
             return columnNames;
         }

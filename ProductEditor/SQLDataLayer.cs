@@ -26,6 +26,11 @@ namespace ProductEditor
         #endregion
         public string connectionString { get; set; }
 
+        // default constructor
+        public SQLDataLayer() =>
+        connectionString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
+
+        // constructor for custom connection
         public SQLDataLayer(string servername, string dbName, string userid, string password)
         {
             ServerName = servername;
@@ -33,7 +38,6 @@ namespace ProductEditor
             UserID = userid;
             Password = password;
 
-            //connectionString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
             connectionString = $"server={ServerName};database={DBName};user id={UserID};password={Password};encrypt=false;";
         }
 

@@ -12,7 +12,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Azure.Identity;
 using Microsoft.Data.SqlClient;
-using SQLEditor;
 
 namespace ProductEditor
 {
@@ -24,70 +23,127 @@ namespace ProductEditor
         public string UserID { get; set; }
         public string Password { get; set; }
         #endregion
-        public string connectionString { get; set; }
+        public string ConnectionString { get; set; }
 
+        #region Constructors (default / custom connection)
         // default constructor
         public SQLDataLayer() =>
-        connectionString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
+            ConnectionString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
 
         // constructor for custom connection
         public SQLDataLayer(string servername, string dbName, string userid, string password)
         {
+
             ServerName = servername;
             DBName = dbName;
             UserID = userid;
             Password = password;
 
-            connectionString = $"server={ServerName};database={DBName};user id={UserID};password={Password};encrypt=false;";
+            ConnectionString = $"server={ServerName};database={DBName};user id={UserID};password={Password};encrypt=false;";
         }
-
-        //Checks if it is able to connect
+        #endregion
+        #region Public methods
         public bool IsConnected()
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 try
                 {
                     conn.Open();
                     return true;
                 }
-                catch (SqlException)
+                catch (SqlException) 
                 {
                     return false;
                 }
             }
-        }
-        public override string ToString()
+        } // bool to check if use can connect to specified server
+        public List<string> GetTableNames()
         {
-            return $"server = '{ServerName}', database = '{DBName}'";
-        }
 
-        //ExecuteNonQuery
-        public string ExecuteNonQuery(string qry)
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"select * from sys.tables", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                List<string> tables = new List<string>();
+
+                int index = 0;
+                while (reader.Read())
+                {
+                    tables.Add((string)reader[0]);
+                    index++;
+                }
+
+                return tables;
+            }
+        } // get string list of database table names
+        public List<DataGridTextColumn> GetFieldNames(string tableName)
         {
-;
-            SqlConnection conn = new SqlConnection(connectionString);
+            //list to be returned
+            List<DataGridTextColumn> columnNames = new List<DataGridTextColumn>();
 
+            //open connection and add field names
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}' " +
+                    "AND TABLE_SCHEMA='dbo' ORDER BY ORDINAL_POSITION ASC", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    DataGridTextColumn column = new DataGridTextColumn();
+                    column.Header = (string)reader[0];
+                    column.Binding = new Binding($"col{(string)reader[0]}");
+
+                    columnNames.Add(column);
+                }
+            }
+
+            return columnNames;
+        } // get field names in table
+        public List<string> LoadRecords(string tablename)
+        {
+            List<string> records = new List<string>();
+            SqlConnection conn = new SqlConnection(ConnectionString);
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(qry, conn);
-                return cmd.ExecuteNonQuery().ToString();
+                SqlCommand cmd = new SqlCommand($"select * from {tablename}", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string line = "";
+
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        //MessageBox.Show(reader.FieldCount.ToString());
+                        line += reader[i];
+                    }
+                    string currentMsg = $"{reader[0]} {reader[2]}";
+                    records.Add(line);
+                }
             }
             catch
             {
-                return "failed";
+
             }
             finally
             {
                 conn.Close();
             }
-        }
 
+            return records;
+        }
+        #endregion
+        public override string ToString() =>
+            $"server = '{ServerName}', database = '{DBName}'";
         private object ExecuteScalar(string qry)
         {
             object ret = null;
-            SqlConnection conn = new SqlConnection(connectionString);
+            SqlConnection conn = new SqlConnection(ConnectionString);
 
             try
             {
@@ -106,100 +162,30 @@ namespace ProductEditor
 
             return ret;
         }
-
-        public List<string> GetTables()
+        private string ExecuteNonQuery(string qry)
         {
+            ;
+            SqlConnection conn = new SqlConnection(ConnectionString);
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand($"select * from sys.tables", conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-                List<string> tables = new List<string>();
-
-                int index = 0;
-                while (reader.Read())
-                {
-                    tables.Add((string)reader[0]);
-                    index++;
-                }                 
-
-                return tables;
-            }
-
-
-
-            //DataTable dt = conn.GetSchema("Tables");
-
-
-            //string lineOfTableNames = string.Join(Environment.NewLine, dt.Rows.OfType<DataRow>().Select(x => string.Join(",", x.ItemArray)));
-
-            //string[] arrTableNames = lineOfTableNames.Split(",");
-
-            //string s = conn.GetSchema("Tables").TableName;
-
-            //string[] arrTableNames = new string[];
-
-        }
-
-        public List<DataGridTextColumn> GetFieldNames(string tableName)
-        {
-            //list to be returned
-            List<DataGridTextColumn> columnNames = new List<DataGridTextColumn>();
-
-            //open connection and add field names
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}' " +
-                    "AND TABLE_SCHEMA='dbo' ORDER BY ORDINAL_POSITION ASC", conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    DataGridTextColumn column = new DataGridTextColumn();
-                    column.Header = (string)reader[0];
-                    column.Binding = new Binding($"col{(string)reader[0]}");
-
-                    columnNames.Add(column);
-                }
-            }
-
-            return columnNames;
-        }
-        public List<string> LoadRecords(string tablename)
-        {
-            List<string> records = new List<string>();
-            SqlConnection conn = new SqlConnection(connectionString);
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand($"select * from {tablename}", conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    string line = "";
-
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        MessageBox.Show(reader.FieldCount.ToString());
-                        //line += reader[i];
-                    }
-                    string currentMsg = $"{reader[0]} {reader[2]}";
-                    records.Add(line);
-                }
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                return cmd.ExecuteNonQuery().ToString();
             }
             catch
             {
-
+                return "failed.";
             }
             finally
             {
                 conn.Close();
             }
-
-            return records;
         }
+
+        
+
+        
+        
     }
 }

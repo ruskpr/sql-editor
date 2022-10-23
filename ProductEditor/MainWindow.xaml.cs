@@ -58,7 +58,7 @@ namespace ProductEditor
                 lblCurrentConnection.Content = this.dataLayer.ToString();
 
                 cbTables.Items.Clear();
-                foreach (string table in this.dataLayer.GetTables())
+                foreach (string table in this.dataLayer.GetTableNames())
                     cbTables.Items.Add(table);
 
 
@@ -74,12 +74,15 @@ namespace ProductEditor
             if (this.dataLayer != null)
             {
                 dgRecords.Columns.Clear();
-                foreach (var item in dataLayer.GetFieldNames(cbTables.Text))
-                {
-                    dgRecords.Columns.Add(item);
-                }
 
-                
+                // add field names to datagrid
+                foreach (var item in dataLayer.GetFieldNames(cbTables.Text))
+                    dgRecords.Columns.Add(item);
+
+                // add data records
+                List<string> tmpList = new List<string>();
+                tmpList.AddRange(dataLayer.LoadRecords(cbTables.Text));
+
             }
         }
 
@@ -93,10 +96,9 @@ namespace ProductEditor
             cw.ShowDialog();
         }
 
-        private void btnLoadRecords_Click(object sender, RoutedEventArgs e)
-        {
+        private void btnLoadRecords_Click(object sender, RoutedEventArgs e) =>
             DisplayRecords();
-        }
+
         #endregion
     }
 }

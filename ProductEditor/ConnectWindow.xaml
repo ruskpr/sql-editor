@@ -29,6 +29,6 @@
 
         <!--buttons-->
         <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="190,179,0,0" VerticalAlignment="Top" Width="80" Click="btnConnect_Click"/>
-        <Button x:Name="btnDefaultValues" Content="Default Values" HorizontalAlignment="Left" Margin="33,179,0,0" VerticalAlignment="Top" Width="93" Click="btnDefaultValues_Click" />
+        <Button x:Name="btnDefaultValues" Content="Default (Northwind)" HorizontalAlignment="Left" Margin="33,179,0,0" VerticalAlignment="Top" Width="126" Click="btnDefault_Click" />
     </Grid>
 </Window>

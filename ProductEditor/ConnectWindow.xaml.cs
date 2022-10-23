@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using SQLEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,41 +30,39 @@ namespace ProductEditor
         }
 
         #region Button click events
-        private void btnDefaultValues_Click(object sender, RoutedEventArgs e)
+        private void btnDefault_Click(object sender, RoutedEventArgs e)
         {
-            tbServerName.Text = "localhost,1434";
-            tbDBName.Text = "Northwind";
-            tbUserID.Text = "sa";
-            tbPassword.Text = "P@ssword!";
+            // default connection string
+            SQLDataLayer dl = new SQLDataLayer();
+            dl.ServerName = "localhost,1434";
+            dl.DBName = "Northwind";
+            GetConnection(dl);
         }
-
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
-             GetConnection();
+            // custom connection
+            SQLDataLayer dl = new SQLDataLayer(tbServerName.Text, tbDBName.Text, tbUserID.Text, tbPassword.Text);
+            GetConnection(dl);
         }
         #endregion
         #region GetConnection method
         /// <summary>
         /// make new instance of SQLDataLayer,
         /// if it connects, pass datalayer to mainform with delegate method,
-        /// if not, show error message box
+        /// if not, show error message
         /// </summary>
-        private void GetConnection() 
+        private void GetConnection(SQLDataLayer datalayer) 
         {
-            SQLDataLayer dl = new SQLDataLayer(tbServerName.Text, tbDBName.Text, tbUserID.Text, tbPassword.Text);
-
             try
             {
-                if (dl.IsConnected()) // if the database is connected...
+                if (datalayer.IsConnected()) // if the database is connected...
                 {
-                    PassConnection.Invoke(dl); // pass the sql connection through delegate (to be used in main window)
-                    MessageBox.Show("Connected to: " + dl.ToString());
+                    PassConnection.Invoke(datalayer); // pass the sql connection through delegate (to be used in main window)
+                    MessageBox.Show("Connected to: " + datalayer.ToString());
                     this.Close(); // close window if connected
                 }
                 else // if you cant connect...
-                {
                     MessageBox.Show("Failed to connect, please try again.", "Error");
-                }
             }
             catch (Exception ex) 
             { 

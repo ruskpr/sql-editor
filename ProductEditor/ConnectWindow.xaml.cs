@@ -58,7 +58,7 @@ namespace ProductEditor
                 if (datalayer.IsConnected()) // if the database is connected...
                 {
                     PassConnection.Invoke(datalayer); // pass the sql connection through delegate (to be used in main window)
-                    MessageBox.Show("Connected to: " + datalayer.ToString());
+                    //MessageBox.Show("Connected to: " + datalayer.ToString());
                     this.Close(); // close window if connected
                 }
                 else // if you cant connect...

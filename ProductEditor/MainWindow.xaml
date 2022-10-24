@@ -27,11 +27,7 @@
 
         <GroupBox x:Name="grpEdit" Header="Edit Item" Margin="10,422,10,5" Grid.ColumnSpan="2"/>
         <Label Content="Selected Item:" HorizontalAlignment="Left" Margin="49,472,0,0" VerticalAlignment="Top"/>
-
-
-
-
-
+        <Grid/>
 
     </Grid>
 </Window>

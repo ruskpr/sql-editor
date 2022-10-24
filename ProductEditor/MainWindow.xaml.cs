@@ -1,21 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ProductEditor
 {
@@ -25,7 +10,7 @@ namespace ProductEditor
     public partial class MainWindow : Window
     {
         private List<Control> tableSelectionControls = new List<Control>();
-        private SQLDataLayer dataLayer;
+        private SQLDataLayer? dataLayer;
         public MainWindow()
         {
             InitializeComponent();
@@ -61,7 +46,6 @@ namespace ProductEditor
                 foreach (string table in this.dataLayer.GetTableNames())
                     cbTables.Items.Add(table);
 
-
                 //DisplayRecords();
                 foreach (var item in tableSelectionControls)
                     item.Visibility = Visibility.Visible;
@@ -76,22 +60,18 @@ namespace ProductEditor
                 dgRecords.Columns.Clear();
 
                 // add field names to datagrid
-                foreach (var item in dataLayer.GetFieldNames(cbTables.Text))
-                    dgRecords.Columns.Add(item);
+                //foreach (var item in dataLayer.GetFieldNames(cbTables.Text))
+                //dgRecords.Columns.Add(item);
 
                 // add data records
-                List<string[]> tmpList = new List<string[]>();
-                tmpList.AddRange(dataLayer.LoadRecords(cbTables.Text));
+                //List<string[]> recordList = new List<string[]>();
+                //recordList.AddRange(dataLayer.GetRecords(cbTables.Text));
+
+                dataLayer.FillDataGrid(dgRecords, cbTables.Text);
 
 
-                foreach (string[] record in tmpList)
-                {
-                    dgRecords.Items.Add(record);
-                }
 
 
-                
- 
             }
         }
 

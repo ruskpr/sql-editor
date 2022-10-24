@@ -77,32 +77,21 @@ namespace ProductEditor
                 return tables;
             }
         } // get string list of database table names
-        public List<DataGridTextColumn> GetFieldNames(string tableName)
+        
+        public void FillDataGrid(DataGrid dg, string tablename)
         {
-            //list to be returned
-            List<DataGridTextColumn> columnNames = new List<DataGridTextColumn>();
-
-            //open connection and add field names
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}' " +
-                    "AND TABLE_SCHEMA='dbo' ORDER BY ORDINAL_POSITION ASC", conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    DataGridTextColumn column = new DataGridTextColumn();
-                    column.Header = (string)reader[0];
-                    column.Binding = new Binding($"col{(string)reader[0]}");
-
-                    columnNames.Add(column);
-                }
+                string qry = "";
+                qry = $"SELECT * FROM {tablename}";
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable("Employee");
+                sda.Fill(dt);
+                dg.ItemsSource = dt.DefaultView;
             }
-
-            return columnNames;
-        } // get field names in table
-        public List<string[]> LoadRecords(string tablename)
+        }
+        public List<string[]> GetRecords(string tablename)
         {
             List<string[]> records = new List<string[]>();
             SqlConnection conn = new SqlConnection(ConnectionString);

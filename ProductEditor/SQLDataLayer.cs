@@ -60,7 +60,6 @@ namespace ProductEditor
         } // bool to check if use can connect to specified server
         public List<string> GetTableNames()
         {
-
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 conn.Open();
@@ -103,9 +102,9 @@ namespace ProductEditor
 
             return columnNames;
         } // get field names in table
-        public List<string> LoadRecords(string tablename)
+        public List<string[]> LoadRecords(string tablename)
         {
-            List<string> records = new List<string>();
+            List<string[]> records = new List<string[]>();
             SqlConnection conn = new SqlConnection(ConnectionString);
             try
             {
@@ -115,34 +114,33 @@ namespace ProductEditor
 
                 while (reader.Read())
                 {
+                    
                     string line = "";
+                    string splitter = "\u007E";
 
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
                         //MessageBox.Show(reader.FieldCount.ToString());
                         line += reader[i];
+
+                        if (i != reader.FieldCount - 1) ///
+                            line += splitter;
                     }
-                    string currentMsg = $"{reader[0]} {reader[2]}";
-                    records.Add(line);
+
+                    string[] record = line.Split(splitter);
+                    records.Add(record);
                 }
             }
-            catch
-            {
-
-            }
-            finally
-            {
-                conn.Close();
-            }
+            catch { }
+            finally { conn.Close(); }
 
             return records;
         }
         #endregion
-        public override string ToString() =>
-            $"server = '{ServerName}', database = '{DBName}'";
-        private object ExecuteScalar(string qry)
+        #region Private methods
+        private object? ExecuteScalar(string qry)
         {
-            object ret = null;
+            object? ret = null;
             SqlConnection conn = new SqlConnection(ConnectionString);
 
             try
@@ -151,20 +149,13 @@ namespace ProductEditor
                 SqlCommand cmd = new SqlCommand(qry, conn);
                 ret = cmd.ExecuteScalar();
             }
-            catch
-            {
-                ret = null;
-            }
-            finally
-            {
-                conn.Close();
-            }
+            catch { ret = null; }
+            finally { conn.Close(); }
 
             return ret;
         }
         private string ExecuteNonQuery(string qry)
         {
-            ;
             SqlConnection conn = new SqlConnection(ConnectionString);
 
             try
@@ -173,19 +164,12 @@ namespace ProductEditor
                 SqlCommand cmd = new SqlCommand(qry, conn);
                 return cmd.ExecuteNonQuery().ToString();
             }
-            catch
-            {
-                return "failed.";
-            }
-            finally
-            {
-                conn.Close();
-            }
+            catch { return "failed."; }
+            finally { conn.Close(); }
         }
+        #endregion
 
-        
-
-        
-        
+        public override string ToString() =>
+            $"server = '{ServerName}', database = '{DBName}'";
     }
 }

@@ -80,9 +80,18 @@ namespace ProductEditor
                     dgRecords.Columns.Add(item);
 
                 // add data records
-                List<string> tmpList = new List<string>();
+                List<string[]> tmpList = new List<string[]>();
                 tmpList.AddRange(dataLayer.LoadRecords(cbTables.Text));
 
+
+                foreach (string[] record in tmpList)
+                {
+                    dgRecords.Items.Add(record);
+                }
+
+
+                
+ 
             }
         }
 

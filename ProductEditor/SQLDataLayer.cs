@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Permissions;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Interop;
 using Azure.Identity;
 using Microsoft.Data.SqlClient;
 
@@ -23,12 +25,16 @@ namespace ProductEditor
         public string UserID { get; set; }
         public string Password { get; set; }
         #endregion
-        public string ConnectionString { get; set; }
+        public string connString { get; }
+        public SqlDataAdapter DataAdapter { get; set; }
 
         #region Constructors (default / custom connection)
         // default constructor
-        public SQLDataLayer() =>
-            ConnectionString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
+        public SQLDataLayer()
+        {
+            connString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
+            DataAdapter = new SqlDataAdapter();
+        }
 
         // constructor for custom connection
         public SQLDataLayer(string servername, string dbName, string userid, string password)
@@ -37,15 +43,15 @@ namespace ProductEditor
             ServerName = servername;
             DBName = dbName;
             UserID = userid;
-            Password = password;
-
-            ConnectionString = $"server={ServerName};database={DBName};user id={UserID};password={Password};encrypt=false;";
+            Password = password; 
+            DataAdapter = new SqlDataAdapter();
+            connString = $"server={ServerName};database={DBName};user id={UserID};password={Password};encrypt=false;";
         }
         #endregion
         #region Public methods
         public bool IsConnected()
         {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            using (SqlConnection conn = new SqlConnection(connString))
             {
                 try
                 {
@@ -60,7 +66,7 @@ namespace ProductEditor
         } // bool to check if use can connect to specified server
         public List<string> GetTableNames()
         {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand($"select * from sys.tables", conn);
@@ -78,59 +84,40 @@ namespace ProductEditor
             }
         } // get string list of database table names
         
-        public void FillDataGrid(DataGrid dg, string tablename)
+        public void FillDataGrid(DataGrid dg, string tablename) //
         {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            using (SqlConnection conn = new SqlConnection(connString))
             {
-                string qry = "";
-                qry = $"SELECT * FROM {tablename}";
-                SqlCommand cmd = new SqlCommand(qry, conn);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Employee");
-                sda.Fill(dt);
-                dg.ItemsSource = dt.DefaultView;
-            }
-        }
-        public List<string[]> GetRecords(string tablename)
-        {
-            List<string[]> records = new List<string[]>();
-            SqlConnection conn = new SqlConnection(ConnectionString);
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand($"select * from {tablename}", conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                try
                 {
-                    
-                    string line = "";
-                    string splitter = "\u007E";
-
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        //MessageBox.Show(reader.FieldCount.ToString());
-                        line += reader[i];
-
-                        if (i != reader.FieldCount - 1) ///
-                            line += splitter;
-                    }
-
-                    string[] record = line.Split(splitter);
-                    records.Add(record);
+                    string qry = "";
+                    qry = $"SELECT * FROM {tablename}";
+                    SqlCommand cmd = new SqlCommand(qry, conn);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable(tablename);
+                    sda.Fill(dt);
+                    dg.ItemsSource = dt.DefaultView;
+                }
+                catch 
+                {
+                    MessageBox.Show("Error");
                 }
             }
-            catch { }
-            finally { conn.Close(); }
+        }
+        public bool UpdateProduct(string tablename,string colname, string selItem, string updateText)
+        {
+            bool ret = true;
+            string cmd = $"update {tablename} set colname";
 
-            return records;
+            return this.ExecuteNonQuery(cmd);
+            return ret;
         }
         #endregion
         #region Private methods
         private object? ExecuteScalar(string qry)
         {
             object? ret = null;
-            SqlConnection conn = new SqlConnection(ConnectionString);
+            SqlConnection conn = new SqlConnection(connString);
 
             try
             {
@@ -143,22 +130,27 @@ namespace ProductEditor
 
             return ret;
         }
-        private string ExecuteNonQuery(string qry)
+        private bool ExecuteNonQuery(string qry)
         {
-            SqlConnection conn = new SqlConnection(ConnectionString);
+            bool ret = true;
+            SqlConnection conn = new SqlConnection(connString);
 
             try
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(qry, conn);
-                return cmd.ExecuteNonQuery().ToString();
+                cmd.ExecuteNonQuery();
             }
-            catch { return "failed."; }
+            catch { ret = false; }
             finally { conn.Close(); }
+
+            return ret;
         }
         #endregion
 
         public override string ToString() =>
             $"server = '{ServerName}', database = '{DBName}'";
+
+        
     }
 }

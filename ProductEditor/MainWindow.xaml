@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:ProductEditor"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="SQL Data Editor" Height="750" Width="900">
-    <Grid x:Name="gridMain" Margin="0,0,0,0" Background="DarkGray" >
+        Title="SQL Data Editor" Height="675" Width="900">
+    <Grid x:Name="gridMain" Background="DarkGray" Height="734" VerticalAlignment="Top" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="50*"/>
@@ -23,11 +23,29 @@
         <Button x:Name="btnLoadRecords" Tag="tableSelection" Grid.Column="1" Content="Load records" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="114" Click="btnLoadRecords_Click"/>
 
         <!--Middle content-->
-        <DataGrid x:Name="dgRecords" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,48,10,312" Background="Black" Grid.ColumnSpan="2"/>
+        <DataGrid x:Name="dgRecords" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,48,10,312" Background="Black" Grid.ColumnSpan="2" MouseDown="dgRecords_MouseDown"/>
 
-        <GroupBox x:Name="grpEdit" Header="Edit Item" Margin="10,422,10,5" Grid.ColumnSpan="2"/>
-        <Label Content="Selected Item:" HorizontalAlignment="Left" Margin="49,472,0,0" VerticalAlignment="Top"/>
-        <Grid/>
+        <!--Edit groupbox-->
+        <GroupBox x:Name="grpEdit" Header="Edit Item" Margin="10,422,10,79" Grid.ColumnSpan="2">
+        </GroupBox>
+        <!--labels-->
+        <Label x:Name="lbCurrentTable" Content="Current Table: [tablename]" HorizontalAlignment="Left" Margin="49,452,0,0" VerticalAlignment="Top"/>
+        
+        <!--selected column-->
+        <Label x:Name="lb2" Content="Selected column:" HorizontalAlignment="Left" Margin="49,507,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbSelectedColumn" Content="[col name]" HorizontalAlignment="Left" Margin="181,507,0,0" VerticalAlignment="Top"/>
+
+        <Label x:Name="lb1" Content="Selected Item:" HorizontalAlignment="Left" Margin="49,538,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbSelectedItem" Content="[selected Item]" HorizontalAlignment="Center" Margin="0,538,0,0" VerticalAlignment="Top"/>
+
+        <Label x:Name="lbChangeto" Content="Change to:" HorizontalAlignment="Left" Margin="49,571,0,0" VerticalAlignment="Top"/>
+
+        <!--textboxes-->
+        <TextBox x:Name="tbChangeTo" HorizontalAlignment="Left" Margin="175,575,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="189"/>
+
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="175,609,0,0" VerticalAlignment="Top" Width="189" Height="25" Click="btnUpdate_Click"/>
+
+
 
     </Grid>
 </Window>

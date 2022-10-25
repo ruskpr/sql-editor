@@ -11,6 +11,8 @@ namespace ProductEditor
     {
         private List<Control> tableSelectionControls = new List<Control>();
         private SQLDataLayer? dataLayer;
+
+        private string selectedColumn;
         public MainWindow()
         {
             InitializeComponent();
@@ -21,6 +23,7 @@ namespace ProductEditor
 
             dgRecords.AutoGenerateColumns = true;
             dgRecords.CanUserAddRows = false;
+            dgRecords.IsReadOnly = true;
 
             tableSelectionControls.Add(lblSelectTable);
             tableSelectionControls.Add(cbTables);
@@ -53,29 +56,32 @@ namespace ProductEditor
             }
         }
         #endregion
+        #region Private methods
         private void DisplayRecords()
         {
             if (this.dataLayer != null)
             {
                 dgRecords.Columns.Clear();
 
-                // add field names to datagrid
-                //foreach (var item in dataLayer.GetFieldNames(cbTables.Text))
-                //dgRecords.Columns.Add(item);
-
-                // add data records
-                //List<string[]> recordList = new List<string[]>();
-                //recordList.AddRange(dataLayer.GetRecords(cbTables.Text));
-
                 dataLayer.FillDataGrid(dgRecords, cbTables.Text);
 
-
-
-
+                lbCurrentTable.Content = $"Current Table: {cbTables.Text}";
             }
         }
+        private void GetColumn()
+        {
+            if (dgRecords.SelectedCells.Count != 1)
+                return;
+
+            selectedColumn = (string)dgRecords.SelectedCells[0].Column.Header;
+            MessageBox.Show(selectedColumn);
+
+        }
+        #endregion
+
 
         #region button click events
+        private void dgRecords_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => GetColumn();
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
             // open connection window to get connection
@@ -84,10 +90,15 @@ namespace ProductEditor
             cw.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             cw.ShowDialog();
         }
+        private void btnLoadRecords_Click(object sender, RoutedEventArgs e) => DisplayRecords();
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
 
-        private void btnLoadRecords_Click(object sender, RoutedEventArgs e) =>
-            DisplayRecords();
-
+            //dataLayer.UpdateProduct(cbTables.Text, selectedColumn, lbSelectedItem.Content.ToString(), tbChangeTo.Text);
+        }
         #endregion
+
+
+
     }
 }

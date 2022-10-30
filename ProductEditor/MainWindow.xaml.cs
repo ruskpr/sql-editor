@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,8 +20,8 @@ namespace ProductEditor
             InitializeComponent();
 
             ConnectWindow.PassConnection += ConnectWindow_PassConnection;
-            
-            lblCurrentConnection.Content = "Not connected, click the button to connect to a database";
+
+            lblCurrentConnection.Content = "Not connected, click the button to connect to a database.";
 
             dgRecords.AutoGenerateColumns = true;
             dgRecords.CanUserAddRows = false;
@@ -50,9 +52,8 @@ namespace ProductEditor
                     cbTables.Items.Add(table);
 
                 //DisplayRecords();
-                foreach (var item in tableSelectionControls)
-                    item.Visibility = Visibility.Visible;
-
+                foreach (var control in tableSelectionControls)
+                    control.Visibility = Visibility.Visible;
             }
         }
         #endregion
@@ -70,18 +71,18 @@ namespace ProductEditor
         }
         private void GetColumn()
         {
-            if (dgRecords.SelectedCells.Count != 1)
-                return;
+            //    return;
 
-            selectedColumn = (string)dgRecords.SelectedCells[0].Column.Header;
-            MessageBox.Show(selectedColumn);
+
 
         }
         #endregion
-
-
         #region button click events
-        private void dgRecords_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => GetColumn();
+        private void dgRecords_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
             // open connection window to get connection
@@ -93,12 +94,70 @@ namespace ProductEditor
         private void btnLoadRecords_Click(object sender, RoutedEventArgs e) => DisplayRecords();
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-
-            //dataLayer.UpdateProduct(cbTables.Text, selectedColumn, lbSelectedItem.Content.ToString(), tbChangeTo.Text);
+            if (this.dataLayer != null)
+            {
+                dataLayer.UpdateProduct(cbTables.Text, selectedColumn, lbSelectedItem.Content.ToString(), tbChangeTo.Text);
+            }
         }
+
+
         #endregion
 
+        private void dgRecords_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
 
+        }
 
+        private void dgRecords_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void dgRecords_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            string str = "";
+            List<DataRowView> rowdetails = new List<DataRowView>();
+            object[] rowItems = new object[dgRecords.Columns.Count];
+            if (dgRecords.SelectedItems.Count > 0)
+            {
+                System.Data.DataRowView selectedRow = (System.Data.DataRowView)dgRecords.SelectedItems[0];
+                for (int j = 0; j < dgRecords.Columns.Count; j++)
+                {
+                    rowItems[j] = (selectedRow.Row.ItemArray[j]);
+                }
+            }
+            foreach (var item in rowItems)
+            {
+                MessageBox.Show(item.ToString());
+            }
+        }
+    }
+    public class Product
+    {
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public int SupplierID { get; set; }
+        public int CategoryID { get; set; }
+        public string QuantityPerUnit { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int UnitsInStock { get; set; }
+        public int UnitsOnOrder { get; set; }
+        public int ReorderLevel { get; set; }
+        public int Discontinued { get; set; }
+
+        public List<object> Columns = new List<object>();
+
+        public Product()
+        {
+            Columns.Add(ProductID);
+            Columns.Add(ProductName);
+            Columns.Add(CategoryID);
+            Columns.Add(QuantityPerUnit);
+            Columns.Add(UnitPrice);
+            Columns.Add(UnitsInStock);
+            Columns.Add(UnitsOnOrder);
+            Columns.Add(ReorderLevel);
+            Columns.Add(Discontinued);
+        }
     }
 }

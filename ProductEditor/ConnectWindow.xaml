@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductEditor"
         mc:Ignorable="d"
-        Title="Connect to an SQL server" Height="250" Width="300">
+        Title="Connect" Height="250" Width="300">
     <Grid>
         <!--Header-->
-        <Label Content="Connect to your server:" HorizontalAlignment="Left" Margin="41,6,0,0" VerticalAlignment="Top"/>
+        <Label Content="Connect to your SQL server:" HorizontalAlignment="Left" Margin="41,6,0,0" VerticalAlignment="Top"/>
 
         <!--server name-->
         <Label Content="server name:" HorizontalAlignment="Left" Margin="41,37,0,0" VerticalAlignment="Top"/>

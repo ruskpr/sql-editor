@@ -100,16 +100,16 @@ namespace ProductEditor
                 }
                 catch 
                 {
-                    MessageBox.Show("Error");
+                    MessageBox.Show("Error.");
                 }
             }
         }
-        public bool UpdateProduct(string tablename,string colname, string selItem, string updateText)
+        public bool UpdateProduct(string tablename,string colname, string productID, string updateText)
         {
             bool ret = true;
-            string cmd = $"update {tablename} set colname";
+            string cmd = $"update {tablename} set {colname} = {updateText} where ProductID = {productID}";
 
-            return this.ExecuteNonQuery(cmd);
+            ret = this.ExecuteNonQuery(cmd);
             return ret;
         }
         #endregion

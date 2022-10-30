@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace ProductEditor
 {
@@ -31,6 +32,7 @@ namespace ProductEditor
             tableSelectionControls.Add(lblSelectTable);
             tableSelectionControls.Add(cbTables);
             tableSelectionControls.Add(btnLoadRecords);
+            tableSelectionControls.Add(btnInsert);
 
             foreach (var item in tableSelectionControls)
                 item.Visibility = Visibility.Hidden;
@@ -52,6 +54,7 @@ namespace ProductEditor
                 foreach (string table in DataLayer.GetTableNames())
                     cbTables.Items.Add(table);
 
+
                 //DisplayRecords();
                 foreach (var control in tableSelectionControls)
                     control.Visibility = Visibility.Visible;
@@ -66,23 +69,16 @@ namespace ProductEditor
                 dgRecords.Columns.Clear();
 
                 DataLayer.FillDataGrid(dgRecords, cbTables.Text);
+                btnInsert.Content = $"Insert new record into {cbTables.Text} table";
 
             }
         }
-        private void GetColumn()
+        private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //    return;
-
-
-
+            DisplayRecords();
         }
         #endregion
         #region button click events
-        private void dgRecords_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
-        }
-
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
             // open connection window to get connection
@@ -91,7 +87,10 @@ namespace ProductEditor
             cw.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             cw.ShowDialog();
         }
-        private void btnLoadRecords_Click(object sender, RoutedEventArgs e) => DisplayRecords();
+        private void btnLoadRecords_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
 
 
@@ -100,7 +99,8 @@ namespace ProductEditor
         {
             RecordViewer rv = new RecordViewer(cbTables.Text, dgRecords, GetSelectedRow());
             rv.Owner = this;
-            rv.Show();
+            rv.ShowDialog();
+            DisplayRecords();
         }
         private object[] GetSelectedRow()
         {
@@ -111,10 +111,15 @@ namespace ProductEditor
                 DataRowView selectedRow = (DataRowView)dgRecords.SelectedItems[0];
                 for (int j = 0; j < dgRecords.Columns.Count; j++)
                 {
-                    rowItems[j] = selectedRow.Row.ItemArray[j];
+                    if (selectedRow.Row.ItemArray[j].GetType() == typeof(Boolean))
+                        rowItems[j] = Convert.ToString(selectedRow.Row.ItemArray[j]);
+                    else
+                        rowItems[j] = selectedRow.Row.ItemArray[j];
                 }
             }
             return rowItems;
         }
+
+        
     }
 }

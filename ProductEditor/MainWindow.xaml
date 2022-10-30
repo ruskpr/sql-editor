@@ -5,32 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductEditor"
         mc:Ignorable="d"
+        Background="Silver"
         WindowStartupLocation="CenterScreen"
-        Title="SQL Data Editor" Height="675" Width="900">
-    <Grid x:Name="gridMain" Background="Silver" Height="734" VerticalAlignment="Top" >
+        Title="SQL Data Editor" Height="900" Width="900">
+    <Grid x:Name="gridMain"  Height="900" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="100*"/>
         </Grid.ColumnDefinitions>
-        <!--Top content-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75*"/>
+            <RowDefinition Height="25*"/>
+
+        </Grid.RowDefinitions>
+        <!--row (0)-->
         <!--Server connection-->
-        <Label x:Name="lblCurrentConnection" Content="[Connected / Not Connected]" HorizontalAlignment="Left" Margin="160,7,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="344"/>
-        <Button x:Name="btnConnectWindow" Content="Connect to server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Click="btnConnect_Click"/>
+        <Label x:Name="lblCurrentConnection" Grid.Row="0" Content="[Connected / Not Connected]" HorizontalAlignment="Left" Margin="160,7,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="344"/>
+        <Button x:Name="btnConnectWindow" Grid.Row="0" Content="Connect to server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Click="btnConnect_Click"/>
 
         <!--Table selection-->
-        <Label x:Name="lblSelectTable" Content="Select Table:" Tag="tableSelection" HorizontalAlignment="Right" Margin="0,7,270,0" VerticalAlignment="Top" Width="79" Grid.Column="1"/>
-        <ComboBox x:Name="cbTables" Tag="tableSelection" Grid.Column="1" HorizontalAlignment="Right" Margin="0,9,128,0" VerticalAlignment="Top" Width="142"/>
-        <Button x:Name="btnLoadRecords" Tag="tableSelection" Grid.Column="1" Content="Load records" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="114" Click="btnLoadRecords_Click"/>
+        <Label x:Name="lblSelectTable" Content="Select Table:" Tag="tableSelection" HorizontalAlignment="Right" Margin="0,7,270,0" VerticalAlignment="Top" Width="79" Grid.Row="0"/>
+        <ComboBox x:Name="cbTables" Tag="tableSelection" Grid.Row="0" HorizontalAlignment="Right" Margin="0,9,128,0" VerticalAlignment="Top" Width="142" SelectionChanged="cbTables_SelectionChanged"/>
+        <Button x:Name="btnLoadRecords" Tag="tableSelection" Grid.Row="0" Content="Load records" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="114" Click="btnLoadRecords_Click"/>
 
-        <!--Middle content-->
-        <DataGrid x:Name="dgRecords" SelectionMode="Single" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,48,10,86" Background="White" Grid.ColumnSpan="2" SelectedCellsChanged="dgRecords_SelectedCellsChanged"/>
+        <!--data grid-->
+        <DataGrid x:Name="dgRecords" Grid.Row="0" SelectionMode="Single" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,38,0,10" Background="White" SelectedCellsChanged="dgRecords_SelectedCellsChanged" HorizontalAlignment="Center" Width="880"/>
 
-        <!--Edit groupbox-->
-        <!--labels-->
 
-        <!--selected column-->
-
-        <!--textboxes-->
+        <!--row (1)-->
+        <Button x:Name="btnInsert" Content="Insert new" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="315" Height="25"/>
 
 
 

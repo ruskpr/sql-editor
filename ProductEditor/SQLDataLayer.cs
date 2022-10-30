@@ -107,10 +107,31 @@ namespace ProductEditor
         public bool UpdateProduct(string tablename,string colname, DataGrid dg, string updateText)
         {
             bool ret = true;
-            string qry = $"update {tablename} set {colname} = {updateText}";
-            
-            MessageBox.Show(qry);
-            //ret = this.ExecuteNonQuery(qry);
+            string qry = $"UPDATE {tablename}\nSET {colname} = '{updateText}'\nWHERE ";
+
+            DataRowView rowView = (DataRowView)dg.SelectedItem;
+
+            for (int i = 0; i < dg.Columns.Count; i++) 
+            {
+                qry += $"{dg.Columns[i].Header} = '{rowView.Row[i]}'\n";
+                string and = i != dg.Columns.Count - 1 ? "AND " : "";
+                qry += and;
+            }
+
+            MessageBoxResult result = MessageBox.Show(qry, "Execute Query?", MessageBoxButton.YesNo);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ret = this.ExecuteNonQuery(qry);
+                    if (ret == false)
+                    {
+                        MessageBox.Show("error");
+                    }
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
             return ret;
         }
         #endregion

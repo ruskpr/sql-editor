@@ -18,16 +18,16 @@
 
         </Grid.RowDefinitions>
 
-        <!-- Top row (0) -->
+        <!--row (0)-->
         <Label x:Name="lbSelectedRecord" Grid.Row="0" Content="SelectedRecord:" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="290"/>
-        <DataGrid x:Name="dgRecordViewer" d:ItemsSource="{d:SampleData ItemCount=1}" Grid.Row="0" Margin="0,26,0,108" Grid.RowSpan="2" SelectedCellsChanged="dgRecordViewer_SelectedCellsChanged" PreviewMouseDown="dgRecordViewer_PreviewMouseDown"/>
-        <Label x:Name="lbCurrentTable"  Content="Current Table: [tablename]" HorizontalAlignment="Left" Margin="49,0,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        <Label x:Name="lbSelectedColumn" Content="Selected Column: [col name]" HorizontalAlignment="Left" Margin="49,25,0,0" VerticalAlignment="Top" Grid.Row="1" Width="177"/>
-        <Label x:Name="lb1" Content="Selected Item:" HorizontalAlignment="Left" Margin="49,40,0,0" VerticalAlignment="Top" Grid.Row="3"/>
-        <Label x:Name="lbSelectedItem" Content="[selected Item]" HorizontalAlignment="Left" Margin="181,50,0,0" VerticalAlignment="Top" Grid.Row="3"/>
-        <Label x:Name="lbChangeto" Content="Change to:" HorizontalAlignment="Left" Margin="49,50,0,0" VerticalAlignment="Top" Grid.Row="3"/>
-        <TextBox x:Name="tbChangeTo" HorizontalAlignment="Left" Margin="175,80,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="189" Grid.Row="3"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="352,18,0,0" VerticalAlignment="Top" Width="110" Height="25" Grid.Row="3" Click="btnUpdate_Click"/>
+        <DataGrid x:Name="dgRecordViewer" d:ItemsSource="{d:SampleData ItemCount=1}" Grid.Row="0" Margin="0,26,0,108" Grid.RowSpan="2" CurrentCellChanged="dgRecordViewer_CurrentCellChanged"/>
+
+        <!--row (1)-->
+        <Label x:Name="lbCurrentTable"  Content="Current Table: [tablename]" HorizontalAlignment="Left" Margin="49,0,0,0" VerticalAlignment="Top" Grid.Row="1" Width="296"/>
+        <Label x:Name="lbSelectedItem" Content="Selected Item: [selected item]" HorizontalAlignment="Left" Margin="49,25,0,0" VerticalAlignment="Top" Grid.Row="1" Width="296"/>
+        <Label x:Name="lbNewValue" Content="New value:" HorizontalAlignment="Left" Margin="49,50,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBox x:Name="tbChangeTo" HorizontalAlignment="Left" Margin="122,53,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="154" Grid.Row="1" Height="22"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="281,53,0,0" VerticalAlignment="Top" Width="64" Height="22" Grid.Row="1" Click="btnUpdate_Click"/>
 
 
     </Grid>

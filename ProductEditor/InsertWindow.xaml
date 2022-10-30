@@ -1,0 +1,32 @@
+﻿<Window x:Class="SQLEditor.InsertWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SQLEditor"
+        mc:Ignorable="d"
+        Title="Insert Window" Height="500" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="82*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+        <!--HEADER-->
+        <Label x:Name="lbHeader" Grid.Row="0" Content="Insert into [tablename]:" FontWeight="Bold"/>
+
+        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <StackPanel x:Name="spFields" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <!--FIELDS GO HERE-->
+            </StackPanel>
+        </ScrollViewer>
+        <Button x:Name="btnInsert" 
+                Content="Insert into [tablename]" 
+                Grid.Row="2"
+                Width="200"
+                Height="25" Click="btnInsert_Click"
+                />
+    </Grid>
+    
+</Window>

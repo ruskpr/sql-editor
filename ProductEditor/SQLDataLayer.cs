@@ -137,6 +137,55 @@ namespace ProductEditor
             }
             return ret;
         }
+        public bool InsertIntoTable(string tablename, List<string> colnames, List<TextBox> textboxes)
+        {
+            //INSERT INTO table_name(column1, column2, column3, ...)
+            //VALUES(value1, value2, value3, ...);
+            bool ret = true;
+            string qry = $"INSERT INTO {tablename} (\n";
+
+
+            //add column names to query
+            for (int i = 0; i < colnames.Count; i++)
+            {
+                if (textboxes[i].Text != String.Empty)
+                {
+                    qry += $"{colnames[i]}";
+                    qry += i != colnames.Count - 1 ? ",\n" : "\n)\n";
+                }
+                    
+            }
+
+            //add textbox values
+            qry += "VALUES (\n";
+
+            for (int j = 0; j < textboxes.Count; j++)
+            {
+                if (textboxes[j].Text != String.Empty)
+                {
+                    qry += $"'{textboxes[j].Text}'";
+                    qry += j != textboxes.Count - 1 ? ",\n" : "\n)";
+                }
+
+            }
+
+            MessageBoxResult result = MessageBox.Show(qry, "Execute Query?", MessageBoxButton.YesNo);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ret = this.ExecuteNonQuery(qry);
+                    if (ret)
+                        MessageBox.Show("Success!");
+                    else
+                        MessageBox.Show("error.");
+
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+            return ret;
+        }
         #endregion
         #region Private methods
         private object? ExecuteScalar(string qry)

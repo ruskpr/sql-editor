@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -22,7 +23,7 @@ namespace ProductEditor
             InitializeComponent();
 
             ConnectWindow.PassConnection += ConnectWindow_PassConnection;
-
+            InsertWindow.OnItemInserted += InsertWindow_OnItemInserted;
             lblCurrentConnection.Content = "Not connected, click the button to connect to a database.";
 
             dgRecords.AutoGenerateColumns = true;
@@ -37,9 +38,8 @@ namespace ProductEditor
                 item.Visibility = Visibility.Hidden;
 
         }
-
-        #region Delegate from connect window
-        //recieve connection when connected through 'ConnectWindow' 
+        #region Delegate events
+        private void InsertWindow_OnItemInserted() => DisplayRecords();
         private void ConnectWindow_PassConnection(SQLDataLayer dataLayer)
         {
             //set main window instance of 'SQLDataLayer' as data layer from 'ConnectWindow'
@@ -47,14 +47,15 @@ namespace ProductEditor
 
             if (DataLayer != null)
             {
+                // show current connection in label
                 lblCurrentConnection.Content = DataLayer.ToString();
 
+                // show table names in dropdown box
                 cbTables.Items.Clear();
                 foreach (string table in DataLayer.GetTableNames())
                     cbTables.Items.Add(table);
 
-
-                //DisplayRecords();
+                // table selection if connected
                 foreach (var control in tableSelectionControls)
                     control.Visibility = Visibility.Visible;
             }
@@ -120,6 +121,14 @@ namespace ProductEditor
             return rowItems;
         }
 
-        
+        private void btnInsert_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbTables.Text != String.Empty)
+            {
+                InsertWindow insertWindow = new InsertWindow(cbTables.Text, dgRecords.Columns.ToList());
+                insertWindow.Owner = this;
+                insertWindow.Show();
+            }
+        }
     }
 }

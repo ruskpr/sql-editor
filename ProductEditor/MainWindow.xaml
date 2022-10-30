@@ -31,7 +31,7 @@
 
 
         <!--row (1)-->
-        <Button x:Name="btnInsert" Content="Insert new" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="315" Height="25"/>
+        <Button x:Name="btnInsert" Content="Insert new" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="315" Height="25" Click="btnInsert_Click"/>
 
 
 

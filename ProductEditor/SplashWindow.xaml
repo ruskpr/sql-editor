@@ -5,12 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLEditor"
         mc:Ignorable="d"
-        Title="Welcome" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="SQL Data Editor" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
+        <!--instructions-->
         <Label Content="Welcome to my program. Here is how to use it:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Label Content="1. Connect to your database by clicking 'Connect to server'." HorizontalAlignment="Left" Margin="40,41,0,0" VerticalAlignment="Top"/>
-        <Label Content="2. Select your table with dropdown box that appears." HorizontalAlignment="Left" Margin="40,71,0,0" VerticalAlignment="Top"/>
-        <Label Content="To Edit or Delete a record, simpl click on it " HorizontalAlignment="Left" Margin="40,101,0,0" VerticalAlignment="Top"/>
+        <Label Content="1. Connect to your database by clicking 'Connect to server'." HorizontalAlignment="Left" Margin="40,40,0,0" VerticalAlignment="Top"/>
+        <Label Content="2. Select your table with the dropdown box that appears." HorizontalAlignment="Left" Margin="40,70,0,0" VerticalAlignment="Top"/>
+        <Label Content="To Edit or Delete a record, simply click on it and an interface will show up." FontWeight="Bold" HorizontalAlignment="Left" Margin="40,100,0,0" VerticalAlignment="Top"/>
+        <Label Content="To Add a record to a table, click the 'Insert new' button." FontWeight="Bold" HorizontalAlignment="Left" Margin="40,130,0,0" VerticalAlignment="Top"/>
+
+        <!--other notes-->
+        <Label Content="Things to point out:" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top"/>
+        <Label Content="- You are able to access any database from the connection window (not just Northwind)" HorizontalAlignment="Left" Margin="40,220,0,0" VerticalAlignment="Top"/>
+        <Label Content="- text" HorizontalAlignment="Left" Margin="40,250,0,0" VerticalAlignment="Top"/>
+
+        <!--close button-->
+        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,365,0,20"  Width="66"/>
+        
 
     </Grid>
 </Window>

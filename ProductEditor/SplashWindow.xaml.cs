@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductEditor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,16 @@ namespace SQLEditor
         public SplashWindow()
         {
             InitializeComponent();
+            this.Closing += SplashWindow_Closing;
+            btnClose.Click += BtnClose_Click;
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e) => this.Close();
+
+        private void SplashWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindow mw = new MainWindow();
+            mw.Show();
         }
     }
 }

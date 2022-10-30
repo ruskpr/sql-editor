@@ -176,9 +176,10 @@ namespace ProductEditor
                 case MessageBoxResult.Yes:
                     ret = this.ExecuteNonQuery(qry);
                     if (ret)
-                        MessageBox.Show("Success!");
+                        MessageBox.Show($"record has been added to {tablename}", "Success!");
                     else
-                        MessageBox.Show("error.");
+                        MessageBox.Show("Please make sure all fields have been filled out with the correct data type.\n" +
+                            "Leave AUTO INCREMENT fields and fields that you want to be NULL empty.", "Error");
 
                     break;
                 case MessageBoxResult.No:

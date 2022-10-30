@@ -64,7 +64,7 @@ namespace ProductEditor
         #region Private methods
         private void DisplayRecords()
         {
-            if (DataLayer != null)
+            if (DataLayer != null && cbTables.SelectedItem != null)
             {
                 dgRecords.Columns.Clear();
 

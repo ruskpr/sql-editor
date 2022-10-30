@@ -104,12 +104,13 @@ namespace ProductEditor
                 }
             }
         }
-        public bool UpdateProduct(string tablename,string colname, string productID, string updateText)
+        public bool UpdateProduct(string tablename,string colname, DataGrid dg, string updateText)
         {
             bool ret = true;
-            string cmd = $"update {tablename} set {colname} = {updateText} where ProductID = {productID}";
-
-            ret = this.ExecuteNonQuery(cmd);
+            string qry = $"update {tablename} set {colname} = {updateText}";
+            
+            MessageBox.Show(qry);
+            //ret = this.ExecuteNonQuery(qry);
             return ret;
         }
         #endregion

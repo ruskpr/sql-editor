@@ -113,9 +113,12 @@ namespace ProductEditor
 
             for (int i = 0; i < dg.Columns.Count; i++) 
             {
-                qry += $"{dg.Columns[i].Header} = '{rowView.Row[i]}'\n";
-                string and = i != dg.Columns.Count - 1 ? "AND " : "";
-                qry += and;
+                if (rowView != null)
+                {
+                    qry += $"{dg.Columns[i].Header} = '{rowView.Row[i]}'\n";
+                    string and = i != dg.Columns.Count - 1 ? "AND " : "";
+                    qry += and;
+                }
             }
 
             MessageBoxResult result = MessageBox.Show(qry, "Execute Query?", MessageBoxButton.YesNo);

@@ -23,12 +23,11 @@
         <Button x:Name="btnConnectWindow" Grid.Row="0" Content="Connect to server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Click="btnConnect_Click"/>
 
         <!--Table selection-->
-        <Label x:Name="lblSelectTable" Content="Select Table:" Tag="tableSelection" HorizontalAlignment="Right" Margin="0,7,270,0" VerticalAlignment="Top" Width="79" Grid.Row="0"/>
-        <ComboBox x:Name="cbTables" Tag="tableSelection" Grid.Row="0" HorizontalAlignment="Right" Margin="0,9,128,0" VerticalAlignment="Top" Width="142" SelectionChanged="cbTables_SelectionChanged"/>
-        <Button x:Name="btnLoadRecords" Tag="tableSelection" Grid.Row="0" Content="Load records" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="114" Click="btnLoadRecords_Click"/>
+        <Label x:Name="lblSelectTable" Content="Select Table:" Tag="tableSelection" HorizontalAlignment="Right" Margin="0,8,152,0" VerticalAlignment="Top" Width="79" Grid.Row="0"/>
+        <ComboBox x:Name="cbTables" Tag="tableSelection" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="142" SelectionChanged="cbTables_SelectionChanged"/>
 
         <!--data grid-->
-        <DataGrid x:Name="dgRecords" Grid.Row="0" SelectionMode="Single" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,38,0,10" Background="White" SelectedCellsChanged="dgRecords_SelectedCellsChanged" HorizontalAlignment="Center" Width="880"/>
+        <DataGrid x:Name="dgRecords" Grid.Row="0" SelectionMode="Single" d:ItemsSource="{d:SampleData ItemCount=35}" Margin="0,38,0,10" Background="White" SelectedCellsChanged="dgRecords_SelectedCellsChanged" HorizontalAlignment="Center" Width="880"/>
 
 
         <!--row (1)-->

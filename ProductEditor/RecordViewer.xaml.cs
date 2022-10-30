@@ -47,6 +47,9 @@ namespace SQLEditor
             InitializeDataGrid(tableName, datagrid, items);
 
             UpdateText();
+
+            lbSelectedItem.Content = "Selected Item: none";
+            btnDeleteRecord.Content = $"Delete this from {this.tableName}";
         }
 
         private void InitializeDataGrid(string tablename, DataGrid datagrid, object[] selectedItems)
@@ -75,7 +78,7 @@ namespace SQLEditor
         private void UpdateText()
         {
             lbCurrentTable.Content = $"Current Table: {tableName}";
-            lbSelectedItem.Content = $"Selected Item: {selColumn} - '{selItem}'";
+            lbSelectedItem.Content = $"Selected Item: {selColumn}: '{selItem}'";
         }
         private void dgRecordViewer_CurrentCellChanged(object sender, EventArgs e)
         {
@@ -97,7 +100,8 @@ namespace SQLEditor
                             BindingOperations.SetBinding(element, FrameworkElement.TagProperty, column.Binding);
                             var cellValue = element.Tag;
 
-                            selItem = cellValue.ToString();
+                            if (cellValue != null)  
+                                selItem = cellValue.ToString();
                         }
                     }
                 }

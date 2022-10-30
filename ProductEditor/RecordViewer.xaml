@@ -5,29 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLEditor"
         mc:Ignorable="d"
-        Title="Record Viewer" Height="450" Width="600" WindowStartupLocation="CenterOwner">
+        Title="Record Viewer" Height="350" Width="600" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="25*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="33*"/>
 
         </Grid.RowDefinitions>
 
         <!--row (0)-->
         <Label x:Name="lbSelectedRecord" Grid.Row="0" Content="SelectedRecord:" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="290"/>
-        <DataGrid x:Name="dgRecordViewer" d:ItemsSource="{d:SampleData ItemCount=1}" Grid.Row="0" Margin="0,26,0,108" Grid.RowSpan="2" CurrentCellChanged="dgRecordViewer_CurrentCellChanged"/>
+        <DataGrid x:Name="dgRecordViewer" d:ItemsSource="{d:SampleData ItemCount=1}" Grid.Row="0" Margin="0,26,0,5" CurrentCellChanged="dgRecordViewer_CurrentCellChanged"/>
 
         <!--row (1)-->
-        <Label x:Name="lbCurrentTable"  Content="Current Table: [tablename]" HorizontalAlignment="Left" Margin="49,0,0,0" VerticalAlignment="Top" Grid.Row="1" Width="296"/>
-        <Label x:Name="lbSelectedItem" Content="Selected Item: [selected item]" HorizontalAlignment="Left" Margin="49,25,0,0" VerticalAlignment="Top" Grid.Row="1" Width="296"/>
-        <Label x:Name="lbNewValue" Content="New value:" HorizontalAlignment="Left" Margin="49,50,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        <TextBox x:Name="tbChangeTo" HorizontalAlignment="Left" Margin="122,53,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="154" Grid.Row="1" Height="22"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="281,53,0,0" VerticalAlignment="Top" Width="64" Height="22" Grid.Row="1" Click="btnUpdate_Click"/>
+        <Label x:Name="lbCurrentTable"  Content="Current Table: [tablename]" HorizontalAlignment="Left" Margin="14,23,0,0" VerticalAlignment="Top" Grid.Row="1" Width="576"/>
+        <Label x:Name="lbSelectedItem" Content="Selected Item: [selected item]" HorizontalAlignment="Left" Margin="14,48,0,0" VerticalAlignment="Top" Grid.Row="1" Width="576"/>
+        <Label x:Name="lbNewValue" Content="New value:" HorizontalAlignment="Left" Margin="14,73,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBox x:Name="tbChangeTo" HorizontalAlignment="Left" Margin="87,76,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="154" Grid.Row="1" Height="22"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="246,76,0,0" VerticalAlignment="Top" Width="64" Height="22" Grid.Row="1" Click="btnUpdate_Click"/>
+
+        <!--row (2)-->
+        <Button x:Name="btnDeleteRecord" Background="DarkRed" Foreground="White" Content="Delete from [tablename]" HorizontalAlignment="Right" Margin="0,77,10,0" Grid.Row="2" VerticalAlignment="Top" Width="238" Height="22"/>
+        <Label Content="*Click on any cell above you wish to change then update its value below" Foreground="Gray" HorizontalAlignment="Left" Margin="14,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="576"/>
 
 
     </Grid>

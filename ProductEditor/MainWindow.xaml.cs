@@ -31,7 +31,6 @@ namespace ProductEditor
 
             tableSelectionControls.Add(lblSelectTable);
             tableSelectionControls.Add(cbTables);
-            tableSelectionControls.Add(btnLoadRecords);
             tableSelectionControls.Add(btnInsert);
 
             foreach (var item in tableSelectionControls)
@@ -68,14 +67,15 @@ namespace ProductEditor
             {
                 dgRecords.Columns.Clear();
 
-                DataLayer.FillDataGrid(dgRecords, cbTables.Text);
-                btnInsert.Content = $"Insert new record into {cbTables.Text} table";
+                DataLayer.FillDataGrid(dgRecords, cbTables.SelectedItem.ToString());
+                btnInsert.Content = $"Insert new record into {cbTables.SelectedItem.ToString()}";
 
             }
         }
         private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DisplayRecords();
+            
         }
         #endregion
         #region button click events

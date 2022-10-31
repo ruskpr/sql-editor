@@ -246,7 +246,8 @@ namespace ProductEditor
                     }
 
                     // remove the redundant AND that was added at the end of the loop
-                    qry = qry.Remove(qry.Length - 4); 
+                    if (fieldsUsed > 0)
+                        qry = qry.Remove(qry.Length - 4); 
 
                     // transfer query to datatable
                     SqlCommand cmd = new SqlCommand(qry, conn);

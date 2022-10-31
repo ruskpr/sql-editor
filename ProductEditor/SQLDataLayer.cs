@@ -76,7 +76,7 @@ namespace ProductEditor
                 return tables;
             }
         } // get string list of database's table names
-        public void FillDataGrid(DataGrid dg, string tablename)
+        public void DisplayAllFromTable(DataGrid dg, string tablename)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -216,6 +216,51 @@ namespace ProductEditor
             }
             return ret;
         } // Insert record
+        public bool DisplaySearched(DataGrid dg, string tablename, List<TextBox> textboxes)
+        {
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    string qry = $"SELECT * FROM {tablename}\nWHERE ";
+
+                    int colcount = dg.Columns.Count;
+
+                    for (int i = 0; i < colcount; i++)
+                    {
+                        if (textboxes[i].Text != String.Empty)
+                        {
+                            qry += $"{dg.Columns[i].Header} = '{textboxes[i].Text}'\n";
+                            string and = i != dg.Columns.Count - 1 ? "AND " : "";
+                            qry += and;
+                        }
+                    }
+
+                    SqlCommand cmd = new SqlCommand(qry, conn);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable(tablename);
+                    
+                    MessageBoxResult result = MessageBox.Show(qry, "Execute Query?", MessageBoxButton.YesNo);
+
+                    switch (result)
+                    {
+                        case MessageBoxResult.Yes:
+                            sda.Fill(dt);
+                            dg.ItemsSource = dt.DefaultView;
+                            return true;
+                        case MessageBoxResult.No:
+                            return false;
+                    }
+                    
+                }
+                catch
+                {
+                    MessageBox.Show("An issue occured while getting the table.", "Error");
+                }
+
+                return false;
+            }
+        }
         #endregion
         #region Private methods
         private object? ExecuteScalar(string qry)

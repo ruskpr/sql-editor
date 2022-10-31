@@ -33,13 +33,16 @@ namespace ProductEditor
             lblSelectTable.Visibility = Visibility.Hidden;
             cbTables.Visibility = Visibility.Hidden;
             btnInsert.Visibility = Visibility.Hidden;
+            btnSearch.Visibility = Visibility.Hidden;
         }
         #endregion
         #region Delegate events
-        private void Recordviewer_OnItemUpdated() => DisplayRecords();
+        private void Recordviewer_OnItemUpdated() => DisplayAllRecords();
         // refresh records when an item is updated
-        private void InsertWindow_OnItemInserted() => DisplayRecords();
+        private void InsertWindow_OnItemInserted() => DisplayAllRecords();
         // refresh records when new item is inserted
+        private void Searchwindow_OnItemSearched() => DisplaySearchedRecords();
+        // refresh records with searched results
         private void ConnectWindow_PassConnection(SQLDataLayer dataLayer)
         // recieve connection from connection window
         {
@@ -60,23 +63,33 @@ namespace ProductEditor
                 lblSelectTable.Visibility = Visibility.Visible;
                 cbTables.Visibility = Visibility.Visible;
                 btnInsert.Visibility = Visibility.Visible;
+                btnSearch.Visibility = Visibility.Visible;
             }
         }
         #endregion
         #region Private methods
-        private void DisplayRecords() // display records in datagrid using sql connection
+        private void DisplayAllRecords() // display records in datagrid using sql connection
         {
             if (DataLayer != null && cbTables.SelectedItem != null)
             {
                 dgRecords.Columns.Clear();
 
-                DataLayer.FillDataGrid(dgRecords, cbTables.SelectedItem.ToString());
+                DataLayer.DisplayAllFromTable(dgRecords, cbTables.SelectedItem.ToString());
                 btnInsert.Content = $"Insert new record into {cbTables.SelectedItem.ToString()}";
                 btnInsert.Width = 280;
 
             }
         } 
-        private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e) => DisplayRecords();
+        private void DisplaySearchedRecords()
+        {
+            if (DataLayer != null && cbTables.SelectedItem != null)
+            {
+                dgRecords.Columns.Clear();
+
+                DataLayer.DisplayAllFromTable(dgRecords, cbTables.SelectedItem.ToString());
+            }
+        }
+        private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e) => DisplayAllRecords();
         private object[] GetSelectedRow() // get items in selected row and pass it to record viewer interface
         {
             object[] rowItems = new object[dgRecords.Columns.Count];
@@ -124,7 +137,24 @@ namespace ProductEditor
             recordviewer.Owner = this;
             recordviewer.Show();
             recordviewer.OnItemUpdated += Recordviewer_OnItemUpdated;
-        }      
+        }
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbTables.Text != String.Empty)
+            {
+                SearchWindow searchwindow = new SearchWindow(dgRecords, cbTables.Text, dgRecords.Columns.ToList());
+                searchwindow.Owner = this;
+                searchwindow.Show();
+                searchwindow.OnItemSearched += Searchwindow_OnItemSearched;
+            }
+            else
+            {
+                MessageBox.Show("Select a table from the dropdown menu above.", "SQL Data Editor");
+            }
+        }
+
+        
         #endregion
+
     }
 }

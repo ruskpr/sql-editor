@@ -12,7 +12,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="9*"/>
+            <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
         <!--row (0)-->
         <!--Server connection-->
@@ -32,6 +32,15 @@
                 Width="220" 
                 Height="25" 
                 Click="btnInsert_Click"/>
+        <Button x:Name="btnSearch" 
+                Content="Search" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Margin="0,70,10,0" 
+                Grid.Row="0" 
+                Width="220" 
+                Height="25" Click="btnSearch_Click" 
+                />
 
         <!--data grid - row (1)-->
         <DataGrid x:Name="dgRecords" 

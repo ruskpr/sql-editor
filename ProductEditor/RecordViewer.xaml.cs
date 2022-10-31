@@ -55,7 +55,7 @@ namespace SQLEditor
             btnDeleteRecord.Content = $"Delete this from {this.tableName}";
         }
         #endregion
-        #region
+        #region Private methods
         private void InitializeDataGrid(string tablename, DataGrid datagrid, object[] selectedItems)
         {
             ///
@@ -155,6 +155,8 @@ namespace SQLEditor
                 MessageBox.Show("Select record above to confirm.");
             }
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Owner.Focus();
         #endregion
+
     }
 }

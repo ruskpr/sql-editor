@@ -12,40 +12,38 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
+using static SQLEditor.InsertWindow;
 
 namespace SQLEditor
 {
-    /// <summary>
-    /// Generate fields based on number of columns the corrensponding table has.
-    /// Allow user to fill out fields and insert record to table through SQL Datalayer
-    /// </summary>
-    public partial class InsertWindow : Window
+    public partial class SearchWindow : Window
     {
         #region Delegate definition
-        public delegate void ItemInserted();
-        public static event ItemInserted OnItemInserted;
+        public delegate void ItemSearched();
+        public event ItemSearched OnItemSearched;
         #endregion
         #region Fields
         private List<TextBox> textboxes = new List<TextBox>();
         private List<string> colnames = new List<string>();
         private string tableName;
+        private DataGrid datagrid;
         #endregion
         #region Constructor
-        public InsertWindow(string tablename, List<DataGridColumn> columns)
+        public SearchWindow(DataGrid dg, string tablename, List<DataGridColumn> columns)
         {
             InitializeComponent();
             // assign table name to local variable and set window title
             this.tableName = tablename;
+            this.datagrid = dg;
             this.Title = $"Insert into {this.tableName}";
 
             // add column names to list
             foreach (var col in columns)
                 colnames.Add(col.Header.ToString());
 
-            lbHeader.Content = $"Fill in the following fields:";
-            btnInsert.TabIndex = colnames.Count;
-            btnInsert.Content = $"Insert into {tableName}";
+            lbHeader.Content = $"Search {tableName}:";
+            btnSearch.TabIndex = colnames.Count;
+            btnSearch.Content = $"Search {tableName}";
 
             AddFields();
 
@@ -61,7 +59,7 @@ namespace SQLEditor
                 Label lb = new Label();
                 lb.Content = $"{colnames[i]}:";
                 lb.HorizontalAlignment = HorizontalAlignment.Left;
-                lb.Margin = new Thickness(80,5,0,0);
+                lb.Margin = new Thickness(80, 5, 0, 0);
                 lb.FontSize = 10;
 
                 TextBox tb = new TextBox();
@@ -76,13 +74,15 @@ namespace SQLEditor
             }
         }
         #endregion
-        #region Button click events
-        private void btnInsert_Click(object sender, RoutedEventArgs e)
+
+        #region Click events
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            var success = MainWindow.DataLayer.InsertIntoTable(tableName, colnames, textboxes);
+            //var success = MainWindow.DataLayer.InsertIntoTable(tableName, colnames, textboxes);
+            bool success = MainWindow.DataLayer.DisplaySearched(datagrid, tableName, textboxes);
 
             if (success)
-                OnItemInserted.Invoke();
+                OnItemSearched.Invoke();
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Owner.Focus();
         #endregion

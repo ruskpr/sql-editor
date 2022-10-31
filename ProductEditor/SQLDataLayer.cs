@@ -104,7 +104,7 @@ namespace ProductEditor
                 }
             }
         }
-        public bool UpdateProduct(string tablename,string colname, DataGrid dg, string updateText)
+        public bool UpdateRecord(string tablename,string colname, DataGrid dg, string updateText)
         {
             bool ret = true;
             string qry = $"UPDATE {tablename}\nSET {colname} = '{updateText}'\nWHERE ";
@@ -137,10 +137,43 @@ namespace ProductEditor
             }
             return ret;
         }
+        public bool DeleteRecord(string tablename, DataGrid dg)
+        {
+            bool ret = true;
+            string qry = $"DELETE FROM {tablename}\nWHERE ";
+
+            DataRowView rowView = (DataRowView)dg.SelectedItem;
+
+            int colcount = dg.Columns.Count;
+
+            for (int i = 0; i < colcount; i++)
+            {
+                if (rowView != null)
+                {
+                    qry += $"{dg.Columns[i].Header} = '{rowView.Row[i]}'\n";
+                    string and = i != dg.Columns.Count - 1 ? "AND " : "";
+                    qry += and;
+                }
+            }
+
+            MessageBoxResult result = MessageBox.Show(qry, "Execute Query?", MessageBoxButton.YesNo);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ret = this.ExecuteNonQuery(qry);
+                    if (ret)
+                        MessageBox.Show($"record has been deleted from {tablename}", "Success!");
+                    else
+                        MessageBox.Show($"Could not delete record from {tablename}", "Error");
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+            return ret;
+        }
         public bool InsertIntoTable(string tablename, List<string> colnames, List<TextBox> textboxes)
         {
-            //INSERT INTO table_name(column1, column2, column3, ...)
-            //VALUES(value1, value2, value3, ...);
             bool ret = true;
             string qry = $"INSERT INTO {tablename} (\n";
 

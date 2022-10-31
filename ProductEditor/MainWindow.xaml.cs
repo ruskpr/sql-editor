@@ -70,6 +70,7 @@ namespace ProductEditor
 
                 DataLayer.FillDataGrid(dgRecords, cbTables.SelectedItem.ToString());
                 btnInsert.Content = $"Insert new record into {cbTables.SelectedItem.ToString()}";
+                btnInsert.Width = 280;
 
             }
         }
@@ -129,6 +130,15 @@ namespace ProductEditor
                 insertWindow.Owner = this;
                 insertWindow.Show();
             }
+            else
+            {
+                MessageBox.Show("Select a table from the dropdown menu above.", "SQL Data Editor");
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            dgRecords.Width = this.Width;
         }
     }
 }

@@ -78,7 +78,7 @@ namespace SQLEditor
         private void UpdateText()
         {
             lbCurrentTable.Content = $"Current Table: {tableName}";
-            lbSelectedItem.Content = $"Selected Item: {selColumn}: '{selItem}'";
+            lbSelectedItem.Content = $"Selected Item: {selColumn}: '{selItem}' ";
         }
         private void dgRecordViewer_CurrentCellChanged(object sender, EventArgs e)
         {
@@ -118,18 +118,38 @@ namespace SQLEditor
         #region Button click events
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.DataLayer != null && tbChangeTo.Text.Trim() != "")
+            if (MainWindow.DataLayer != null && tbNewValue.Text.Trim() != "")
             {
-                MainWindow.DataLayer.UpdateProduct(tableName, selColumn, dgRecordViewer, tbChangeTo.Text);
+                MainWindow.DataLayer.UpdateRecord(tableName, selColumn, dgRecordViewer, tbNewValue.Text);
                 this.Close();
             }
-            else if (tbChangeTo.Text.Trim() == "")
+            else if (tbNewValue.Text.Trim() == "")
             {
                 MessageBox.Show("Enter a value.");
-                tbChangeTo.Focus();
+                tbNewValue.Focus();
             }
 
         }
         #endregion
+
+        private void btnDeleteRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgRecordViewer.SelectedItems.Count > 0)
+            {
+                if (MainWindow.DataLayer != null)
+                {
+                    bool success = MainWindow.DataLayer.DeleteRecord(tableName, dgRecordViewer);
+
+                    if (success)
+                        this.Close();
+                }
+            }
+            else if (dgRecordViewer.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Select record above to confirm.");
+            }
+            
+            
+        }
     }
 }

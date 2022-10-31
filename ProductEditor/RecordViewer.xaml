@@ -23,7 +23,8 @@
 
         <!--row (1)-->
         <Label Content="*Click on any cell above you wish to change then update its value below" Foreground="Gray" HorizontalAlignment="Left" Margin="14,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="576"/>
-        <Label Content="*To update boolean value, enter '1' for True, '0' for False" Foreground="Gray" HorizontalAlignment="Left" Margin="14,25,0,0" Grid.Row="1" VerticalAlignment="Top" Width="576"/>
+        <Label Content="*To update boolean value, enter '1' for True, '0' for False" Foreground="Gray" HorizontalAlignment="Left" Margin="14,22,0,0" Grid.Row="1" VerticalAlignment="Top" Width="576"/>
+        <Label Content="*Date format is yyyy-mm-dd" Foreground="Gray" HorizontalAlignment="Left" Margin="14,46,0,0" Grid.Row="1" VerticalAlignment="Top" Width="576"/>
 
         <Label x:Name="lbCurrentTable"  Content="Current Table: [tablename]" HorizontalAlignment="Left" Margin="14,0,0,0" VerticalAlignment="Center" Grid.Row="1" Width="576"/>
         <Label x:Name="lbSelectedItem" Content="Selected Item: [selected item]" HorizontalAlignment="Left" Margin="14,95,0,0" VerticalAlignment="Top" Grid.Row="1" Width="576"/>

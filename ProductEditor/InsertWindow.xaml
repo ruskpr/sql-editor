@@ -8,14 +8,16 @@
         Title="Insert Window" Height="500" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="82*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
 
         <!--HEADER-->
         <Label x:Name="lbHeader" Grid.Row="0" Content="Insert into [tablename]:" FontWeight="Bold"/>
-
+        <Label Content="*Boolean value: '1' for True, '0' for False" Foreground="Gray" HorizontalAlignment="Left" Margin="14,22,0,0" Grid.Row="0" VerticalAlignment="Top" Width="576"/>
+        <Label Content="*Date format is yyyy-mm-dd" Foreground="Gray" HorizontalAlignment="Left" Margin="14,46,0,0" Grid.Row="0" VerticalAlignment="Top" Width="576"/>
+        
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="spFields" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <!--FIELDS GO HERE-->

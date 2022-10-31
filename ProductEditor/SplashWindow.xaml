@@ -17,7 +17,7 @@
         <!--other notes-->
         <Label Content="Things to point out:" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top"/>
         <Label Content="- You are able to access any database from the connection window (not just Northwind)" HorizontalAlignment="Left" Margin="40,220,0,0" VerticalAlignment="Top"/>
-        <Label Content="- text" HorizontalAlignment="Left" Margin="40,250,0,0" VerticalAlignment="Top"/>
+        <Label Content="- As far as I have tested most tables can be modified with some exceptions (ex. image datatype)" HorizontalAlignment="Left" Margin="40,250,0,0" VerticalAlignment="Top"/>
 
         <!--close button-->
         <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,365,0,20"  Width="66"/>

@@ -115,9 +115,13 @@ namespace ProductEditor
             {
                 if (rowView != null)
                 {
-                    qry += $"{dg.Columns[i].Header} = '{rowView.Row[i]}'\n";
-                    string and = i != dg.Columns.Count - 1 ? "AND " : "";
-                    qry += and;
+                    if (rowView.Row[i].ToString() != String.Empty)
+                    {
+                        qry += $"{dg.Columns[i].Header} = '{rowView.Row[i]}'\n";
+                        string and = i != dg.Columns.Count - 1 ? "AND " : "";
+                        qry += and;
+                    }
+                        
                 }
             }
 

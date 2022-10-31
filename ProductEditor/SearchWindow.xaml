@@ -8,14 +8,15 @@
         Title="SearchWindow" Height="500" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="15*"/>
-            <RowDefinition Height="75*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="65*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
         <!--HEADER-->
         <Label x:Name="lbHeader" Grid.Row="0" Content="Search [tablename]:" HorizontalContentAlignment="Center" FontWeight="Bold"/>
-        <TextBlock Text="*Enter values for whichever fields you wish to search with, the more fields, the more specific search" TextWrapping="Wrap" Foreground="Gray" HorizontalAlignment="Left" Margin="20,27,0,0" Grid.Row="0" VerticalAlignment="Top" Width="340" Height="84"/>
+        <TextBlock Text="*Enter values for whichever fields you wish to search with, the more fields, the more specific search." TextWrapping="Wrap" Foreground="Gray" HorizontalAlignment="Left" Margin="20,27,0,0" Grid.Row="0" VerticalAlignment="Top" Width="340" Height="45"/>
+        <TextBlock x:Name="lbInstructions2" Text="*Leave all fields empty to show all records in [tablename]." TextWrapping="Wrap" Foreground="Gray" HorizontalAlignment="Left" Margin="20,67,0,0" Grid.Row="0" VerticalAlignment="Top" Width="340" Height="45"/>
 
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="spFields" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

@@ -222,23 +222,36 @@ namespace ProductEditor
             {
                 try
                 {
-                    string qry = $"SELECT * FROM {tablename}\nWHERE ";
+                    string qry = $"SELECT * FROM {tablename}\n";
 
                     int colcount = dg.Columns.Count;
+                    int fieldsused = 0;
 
                     for (int i = 0; i < colcount; i++)
-                    {
                         if (textboxes[i].Text != String.Empty)
-                        {
-                            qry += $"{dg.Columns[i].Header} = '{textboxes[i].Text}'\n";
-                            string and = i != dg.Columns.Count - 1 ? "AND " : "";
-                            qry += and;
-                        }
+                            fieldsused++;
+
+                    if (fieldsused != 0)
+                        qry += "WHERE ";
+
+                    for (int j = 0; j < fieldsused; j++)
+                    {
+                        qry += $"{dg.Columns[j].Header} = '{textboxes[j].Text}'\n";
+                        string and = j != fieldsused - 1 ? "AND " : "";
+
+                        qry += and;
                     }
 
                     SqlCommand cmd = new SqlCommand(qry, conn);
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable(tablename);
+
+                    if (fieldsused == 0)
+                    {
+                        sda.Fill(dt);
+                        dg.ItemsSource = dt.DefaultView;
+                        return true;
+                    }
                     
                     MessageBoxResult result = MessageBox.Show(qry, "Execute Query?", MessageBoxButton.YesNo);
 
@@ -251,7 +264,6 @@ namespace ProductEditor
                         case MessageBoxResult.No:
                             return false;
                     }
-                    
                 }
                 catch
                 {

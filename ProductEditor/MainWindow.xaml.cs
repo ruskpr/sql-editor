@@ -41,7 +41,6 @@ namespace ProductEditor
         // refresh records when an item is updated
         private void InsertWindow_OnItemInserted() => DisplayAllRecords();
         // refresh records when new item is inserted
-        private void Searchwindow_OnItemSearched() => DisplaySearchedRecords();
         // refresh records with searched results
         private void ConnectWindow_PassConnection(SQLDataLayer dataLayer)
         // recieve connection from connection window
@@ -75,20 +74,10 @@ namespace ProductEditor
                 dgRecords.Columns.Clear();
 
                 DataLayer.DisplayAllFromTable(dgRecords, cbTables.SelectedItem.ToString());
-                btnInsert.Content = $"Insert new record into {cbTables.SelectedItem.ToString()}";
-                btnInsert.Width = 280;
+                btnInsert.Content = $"Insert into {cbTables.SelectedItem.ToString()}";
 
             }
         } 
-        private void DisplaySearchedRecords()
-        {
-            if (DataLayer != null && cbTables.SelectedItem != null)
-            {
-                dgRecords.Columns.Clear();
-
-                DataLayer.DisplayAllFromTable(dgRecords, cbTables.SelectedItem.ToString());
-            }
-        }
         private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e) => DisplayAllRecords();
         private object[] GetSelectedRow() // get items in selected row and pass it to record viewer interface
         {
@@ -145,7 +134,6 @@ namespace ProductEditor
                 SearchWindow searchwindow = new SearchWindow(dgRecords, cbTables.Text, dgRecords.Columns.ToList());
                 searchwindow.Owner = this;
                 searchwindow.Show();
-                searchwindow.OnItemSearched += Searchwindow_OnItemSearched;
             }
             else
             {

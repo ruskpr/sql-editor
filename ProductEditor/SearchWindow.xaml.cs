@@ -42,6 +42,7 @@ namespace SQLEditor
                 colnames.Add(col.Header.ToString());
 
             lbHeader.Content = $"Search {tableName}:";
+            lbInstructions2.Text = $"*Leave all fields empty to show all records in {tableName}.";
             btnSearch.TabIndex = colnames.Count;
             btnSearch.Content = $"Search {tableName}";
 
@@ -82,7 +83,10 @@ namespace SQLEditor
             bool success = MainWindow.DataLayer.DisplaySearched(datagrid, tableName, textboxes);
 
             if (success)
-                OnItemSearched.Invoke();
+                this.Close();
+            else
+                MessageBox.Show("An error occured.");
+
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Owner.Focus();
         #endregion

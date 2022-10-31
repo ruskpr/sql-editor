@@ -1,17 +1,8 @@
 ﻿using ProductEditor;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace SQLEditor
 {
@@ -30,6 +21,16 @@ namespace SQLEditor
         {
             MainWindow mw = new MainWindow();
             mw.Show();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            var destinationurl = "https://github.com/ruskpr/SQL-Editor";
+            var sInfo = new System.Diagnostics.ProcessStartInfo(destinationurl)
+            {
+                UseShellExecute = true,
+            };
+            System.Diagnostics.Process.Start(sInfo);
         }
     }
 }

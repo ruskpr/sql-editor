@@ -31,7 +31,7 @@ namespace SQLEditor
         private object[] items;
         private string tableName;
         private string selColumn;
-        private string selItem;
+        private string? selItem = null;
         #endregion
         #region Constructor
         public RecordViewer(string tablename, DataGrid datagrid, object[] selectedItems)
@@ -127,6 +127,11 @@ namespace SQLEditor
                     this.Close();
                     OnItemUpdated.Invoke();
                 } 
+            }
+            else if (selItem == null)
+            {
+                MessageBox.Show("Select the item you want to change.");
+                tbNewValue.Focus();
             }
             else if (tbNewValue.Text.Trim() == "")
             {

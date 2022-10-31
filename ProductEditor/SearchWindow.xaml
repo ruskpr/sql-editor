@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLEditor"
         mc:Ignorable="d"
-        Title="SearchWindow" Height="500" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Closing="Window_Closing">
+        Title="Search Window" Height="500" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25*"/>

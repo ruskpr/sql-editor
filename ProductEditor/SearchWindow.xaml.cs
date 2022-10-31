@@ -35,7 +35,7 @@ namespace SQLEditor
             // assign table name to local variable and set window title
             this.tableName = tablename;
             this.datagrid = dg;
-            this.Title = $"Insert into {this.tableName}";
+            this.Title = $"Search records in {this.tableName}";
 
             // add column names to list
             foreach (var col in columns)
@@ -84,9 +84,6 @@ namespace SQLEditor
 
             if (success)
                 this.Close();
-            else
-                MessageBox.Show("An error occured.");
-
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Owner.Focus();
         #endregion

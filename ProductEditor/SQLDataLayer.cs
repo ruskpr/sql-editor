@@ -1,19 +1,10 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Interop;
-using Azure.Identity;
-using Microsoft.Data.SqlClient;
 
 namespace ProductEditor
 {
@@ -98,7 +89,6 @@ namespace ProductEditor
         } // fill data grid using SQLDataAdapter
         public bool UpdateRecord(string tablename,string colname, DataGrid dg, string updateText)
         {
-            bool ret = true;
             string qry = $"UPDATE {tablename}\nSET {colname} = '{updateText}'\nWHERE ";
 
             DataRowView rowView = (DataRowView)dg.SelectedItem;
@@ -121,17 +111,20 @@ namespace ProductEditor
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    ret = this.ExecuteNonQuery(qry);
+                    bool ret = this.ExecuteNonQuery(qry);
                     if (ret)
+                    {
                         MessageBox.Show("Record has been updated.", "Success!");
+                        return ret;
+                    }
                     else
                         MessageBox.Show("Could not update field. Please review the value and ensure it is " +
-                            "entered correctly and matches the corresponding datatype.", "Error");
+                                "entered correctly and matches the corresponding datatype.", "Error");
                     break;
                 case MessageBoxResult.No:
-                    break;
+                    return false;
             }
-            return ret;
+            return false;
         } // Update record
         public bool DeleteRecord(string tablename, DataGrid dg)
         {
@@ -159,14 +152,17 @@ namespace ProductEditor
                 case MessageBoxResult.Yes:
                     ret = this.ExecuteNonQuery(qry);
                     if (ret)
+                    {
                         MessageBox.Show($"record has been deleted from {tablename}", "Success!");
+                        return ret;
+                    }
                     else
                         MessageBox.Show($"Could not delete record from {tablename}", "Error");
                     break;
                 case MessageBoxResult.No:
-                    break;
+                    return false;
             }
-            return ret;
+            return false;
         } // Delete record
         public bool InsertIntoTable(string tablename, List<string> colnames, List<TextBox> textboxes)
         {
@@ -222,46 +218,59 @@ namespace ProductEditor
             {
                 try
                 {
+                    // initialize query string
                     string qry = $"SELECT * FROM {tablename}\n";
 
+                    // declare variables
                     int colcount = dg.Columns.Count;
-                    int fieldsused = 0;
+                    int fieldsUsed = 0;
 
+                    //loop through textboxes to check how many are used
                     for (int i = 0; i < colcount; i++)
-                        if (textboxes[i].Text != String.Empty)
-                            fieldsused++;
+                        if (textboxes[i].Text != "")
+                            fieldsUsed++;
 
-                    if (fieldsused != 0)
+                    // if a field is used, start WHERE statement
+                    if (fieldsUsed > 0)
                         qry += "WHERE ";
 
-                    for (int j = 0; j < fieldsused; j++)
+                    // loop through each textbox that has text inside
+                    for (int j = 0; j < textboxes.Count; j++)
                     {
-                        qry += $"{dg.Columns[j].Header} = '{textboxes[j].Text}'\n";
-                        string and = j != fieldsused - 1 ? "AND " : "";
-
-                        qry += and;
+                        if (textboxes[j].Text != "")
+                        {
+                            //add WHERE clause statements
+                            qry += $"{dg.Columns[j].Header} = '{textboxes[j].Text}'\n";
+                            qry += "AND ";
+                        }                        
                     }
 
+                    // remove the redundant AND that was added at the end of the loop
+                    qry = qry.Remove(qry.Length - 4); 
+
+                    // transfer query to datatable
                     SqlCommand cmd = new SqlCommand(qry, conn);
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable(tablename);
 
-                    if (fieldsused == 0)
+                    //if no fields are entered execute 'SELECT * FROM [tablename]' statement without message dialog
+                    if (fieldsUsed == 0)
                     {
                         sda.Fill(dt);
                         dg.ItemsSource = dt.DefaultView;
                         return true;
                     }
                     
+                    // show message dialog to ask user if they want to execute the query
                     MessageBoxResult result = MessageBox.Show(qry, "Execute Query?", MessageBoxButton.YesNo);
 
                     switch (result)
                     {
-                        case MessageBoxResult.Yes:
+                        case MessageBoxResult.Yes: // set datagrid source as queried result
                             sda.Fill(dt);
                             dg.ItemsSource = dt.DefaultView;
                             return true;
-                        case MessageBoxResult.No:
+                        case MessageBoxResult.No: // exit dialog without any changes
                             return false;
                     }
                 }

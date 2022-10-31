@@ -19,7 +19,15 @@
         <Label Content="- You are able to access any database from the connection window (not just Northwind)" HorizontalAlignment="Left" Margin="40,220,0,0" VerticalAlignment="Top"/>
         <Label Content="- Columns can be sorted ascending and descending when a column is clicked." HorizontalAlignment="Left" Margin="40,250,0,0" VerticalAlignment="Top"/>
         <Label Content="- As far as I have tested, most tables can be modified with some exceptions (ex. image datatype)" HorizontalAlignment="Left" Margin="40,280,0,0" VerticalAlignment="Top"/>
+        <Label Content="- Order Details table for Northwind DB has an issue displaying records" HorizontalAlignment="Left" Margin="40,310,0,0" VerticalAlignment="Top"/>
 
+        <Label Margin="10,375,0,0" Width="180" Height="30" HorizontalAlignment="Left">
+            <Hyperlink NavigateUri="https://github.com/ruskpr/SQL-Editor" RequestNavigate="Hyperlink_RequestNavigate"
+                       >
+                github.com/ruskpr/SQL-Editor
+            </Hyperlink>
+        </Label>
+        
         <!--close button-->
         <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,365,0,20"  Width="66"/>
         

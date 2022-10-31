@@ -5,19 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLEditor"
         mc:Ignorable="d"
-        Title="Insert Window" Height="500" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="Insert Window" Height="500" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="60*"/>
-            <RowDefinition Height="20*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="65*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
         <!--HEADER-->
-        <Label x:Name="lbHeader" Grid.Row="0" Content="Insert into [tablename]:" FontWeight="Bold"/>
-        <Label Content="*Boolean value: '1' for True, '0' for False" Foreground="Gray" HorizontalAlignment="Left" Margin="14,22,0,0" Grid.Row="0" VerticalAlignment="Top" Width="576"/>
-        <Label Content="*Date format is yyyy-mm-dd" Foreground="Gray" HorizontalAlignment="Left" Margin="14,46,0,0" Grid.Row="0" VerticalAlignment="Top" Width="576"/>
-        
+        <Label x:Name="lbHeader" Grid.Row="0" Content="Insert into [tablename]:" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+        <Label Content="*Boolean value: '1' for True, '0' for False" Foreground="Gray" HorizontalAlignment="Left" Margin="14,22,0,0" Grid.Row="0" VerticalAlignment="Top" Width="261"/>
+        <Label Content="*Date format is yyyy-mm-dd" Foreground="Gray" HorizontalAlignment="Left" Margin="14,46,0,0" Grid.Row="0" VerticalAlignment="Top" Width="261"/>
+        <!--<Label Content="*Leave PKs, AUTO INCREMENT fields, and fields you wish to be null empty"  Foreground="Gray" HorizontalAlignment="Left" Margin="14,72,0,0" Grid.Row="0" VerticalAlignment="Top" Width="376" Height="63"/>-->
+        <TextBlock Text="*Leave PKs, AUTO INCREMENT fields, and fields you wish to be null empty" TextWrapping="Wrap" Foreground="Gray" HorizontalAlignment="Left" Margin="20,73,0,0" Grid.Row="0" VerticalAlignment="Top" Width="340" Height="62" Grid.RowSpan="2"/>
+
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="spFields" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <!--FIELDS GO HERE-->
@@ -30,5 +32,5 @@
                 Height="25" Click="btnInsert_Click"
                 />
     </Grid>
-    
+
 </Window>

@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace SQLEditor
 {
-    /// <summary>
-    /// Interaction logic for SplashWindow.xaml
-    /// </summary>
     public partial class SplashWindow : Window
     {
         public SplashWindow()

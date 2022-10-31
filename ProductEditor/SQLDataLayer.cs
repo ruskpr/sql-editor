@@ -24,27 +24,20 @@ namespace ProductEditor
         public string DBName { get; set; }
         public string UserID { get; set; }
         public string Password { get; set; }
-        #endregion
         public string connString { get; }
-        public SqlDataAdapter DataAdapter { get; set; }
-
+        #endregion
         #region Constructors (default / custom connection)
         // default constructor
-        public SQLDataLayer()
-        {
+        public SQLDataLayer() =>
             connString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
-            DataAdapter = new SqlDataAdapter();
-        }
 
         // constructor for custom connection
         public SQLDataLayer(string servername, string dbName, string userid, string password)
         {
-
             ServerName = servername;
             DBName = dbName;
             UserID = userid;
             Password = password; 
-            DataAdapter = new SqlDataAdapter();
             connString = $"server={ServerName};database={DBName};user id={UserID};password={Password};encrypt=false;";
         }
         #endregion
@@ -63,7 +56,7 @@ namespace ProductEditor
                     return false;
                 }
             }
-        } // bool to check if use can connect to specified server
+        } // bool to check if user can connect to a server
         public List<string> GetTableNames()
         {
             using (SqlConnection conn = new SqlConnection(connString))
@@ -82,9 +75,8 @@ namespace ProductEditor
 
                 return tables;
             }
-        } // get string list of database table names
-        
-        public void FillDataGrid(DataGrid dg, string tablename) //
+        } // get string list of database's table names
+        public void FillDataGrid(DataGrid dg, string tablename)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -100,10 +92,10 @@ namespace ProductEditor
                 }
                 catch 
                 {
-                    MessageBox.Show("Error.");
+                    MessageBox.Show("An issue occured while getting the table.","Error");
                 }
             }
-        }
+        } // fill data grid using SQLDataAdapter
         public bool UpdateRecord(string tablename,string colname, DataGrid dg, string updateText)
         {
             bool ret = true;
@@ -120,8 +112,7 @@ namespace ProductEditor
                         qry += $"{dg.Columns[i].Header} = '{rowView.Row[i]}'\n";
                         string and = i != dg.Columns.Count - 1 ? "AND " : "";
                         qry += and;
-                    }
-                        
+                    }       
                 }
             }
 
@@ -131,16 +122,17 @@ namespace ProductEditor
             {
                 case MessageBoxResult.Yes:
                     ret = this.ExecuteNonQuery(qry);
-                    if (ret == false)
-                    {
-                        MessageBox.Show("error");
-                    }
+                    if (ret)
+                        MessageBox.Show("Record has been updated.", "Success!");
+                    else
+                        MessageBox.Show("Could not update field. Please review the value and ensure it is " +
+                            "entered correctly and matches the corresponding datatype.", "Error");
                     break;
                 case MessageBoxResult.No:
                     break;
             }
             return ret;
-        }
+        } // Update record
         public bool DeleteRecord(string tablename, DataGrid dg)
         {
             bool ret = true;
@@ -175,7 +167,7 @@ namespace ProductEditor
                     break;
             }
             return ret;
-        }
+        } // Delete record
         public bool InsertIntoTable(string tablename, List<string> colnames, List<TextBox> textboxes)
         {
             bool ret = true;
@@ -223,7 +215,7 @@ namespace ProductEditor
                     break;
             }
             return ret;
-        }
+        } // Insert record
         #endregion
         #region Private methods
         private object? ExecuteScalar(string qry)
@@ -259,10 +251,9 @@ namespace ProductEditor
             return ret;
         }
         #endregion
-
+        #region Override ToString()
         public override string ToString() =>
             $"server = '{ServerName}', database = '{DBName}'";
-
-        
+        #endregion
     }
 }

@@ -14,10 +14,10 @@ namespace ProductEditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Control> tableSelectionControls = new List<Control>();
+        #region Static DataLayer component
         public static SQLDataLayer? DataLayer;
-
-        private string selectedColumn;
+        #endregion
+        #region Constructor
         public MainWindow()
         {
             InitializeComponent();
@@ -30,17 +30,18 @@ namespace ProductEditor
             dgRecords.CanUserAddRows = false;
             dgRecords.IsReadOnly = true;
 
-            tableSelectionControls.Add(lblSelectTable);
-            tableSelectionControls.Add(cbTables);
-            tableSelectionControls.Add(btnInsert);
-
-            foreach (var item in tableSelectionControls)
-                item.Visibility = Visibility.Hidden;
-
+            lblSelectTable.Visibility = Visibility.Hidden;
+            cbTables.Visibility = Visibility.Hidden;
+            btnInsert.Visibility = Visibility.Hidden;
         }
+        #endregion
         #region Delegate events
+        private void Recordviewer_OnItemUpdated() => DisplayRecords();
+        // refresh records when an item is updated
         private void InsertWindow_OnItemInserted() => DisplayRecords();
+        // refresh records when new item is inserted
         private void ConnectWindow_PassConnection(SQLDataLayer dataLayer)
+        // recieve connection from connection window
         {
             //set main window instance of 'SQLDataLayer' as data layer from 'ConnectWindow'
             DataLayer = dataLayer;
@@ -55,14 +56,15 @@ namespace ProductEditor
                 foreach (string table in DataLayer.GetTableNames())
                     cbTables.Items.Add(table);
 
-                // table selection if connected
-                foreach (var control in tableSelectionControls)
-                    control.Visibility = Visibility.Visible;
+                // show table selection if connected
+                lblSelectTable.Visibility = Visibility.Visible;
+                cbTables.Visibility = Visibility.Visible;
+                btnInsert.Visibility = Visibility.Visible;
             }
         }
         #endregion
         #region Private methods
-        private void DisplayRecords()
+        private void DisplayRecords() // display records in datagrid using sql connection
         {
             if (DataLayer != null && cbTables.SelectedItem != null)
             {
@@ -73,38 +75,9 @@ namespace ProductEditor
                 btnInsert.Width = 280;
 
             }
-        }
-        private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DisplayRecords();
-            
-        }
-        #endregion
-        #region button click events
-        private void btnConnect_Click(object sender, RoutedEventArgs e)
-        {
-            // open connection window to get connection
-            ConnectWindow cw = new ConnectWindow();
-            cw.Owner = this;
-            cw.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            cw.ShowDialog();
-        }
-        private void btnLoadRecords_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
-
-        #endregion
-        private void dgRecords_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
-        {
-            RecordViewer rv = new RecordViewer(cbTables.Text, dgRecords, GetSelectedRow());
-            rv.Owner = this;
-            rv.ShowDialog();
-            DisplayRecords();
-        }
-        private object[] GetSelectedRow()
+        } 
+        private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e) => DisplayRecords();
+        private object[] GetSelectedRow() // get items in selected row and pass it to record viewer interface
         {
             object[] rowItems = new object[dgRecords.Columns.Count];
 
@@ -120,9 +93,18 @@ namespace ProductEditor
                 }
             }
             return rowItems;
+        } 
+        #endregion
+        #region Click events
+        private void btnConnect_Click(object sender, RoutedEventArgs e) // open connection window
+        {
+            // open connection window to get connection
+            ConnectWindow cw = new ConnectWindow();
+            cw.Owner = this;
+            cw.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            cw.ShowDialog();
         }
-
-        private void btnInsert_Click(object sender, RoutedEventArgs e)
+        private void btnInsert_Click(object sender, RoutedEventArgs e) // open insert record window
         {
             if (cbTables.Text != String.Empty)
             {
@@ -135,10 +117,14 @@ namespace ProductEditor
                 MessageBox.Show("Select a table from the dropdown menu above.", "SQL Data Editor");
             }
         }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void dgRecords_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        //display record viewer when cell is selected
         {
-            dgRecords.Width = this.Width;
-        }
+            RecordViewer recordviewer = new RecordViewer(cbTables.Text, dgRecords, GetSelectedRow());
+            recordviewer.Owner = this;
+            recordviewer.Show();
+            recordviewer.OnItemUpdated += Recordviewer_OnItemUpdated;
+        }      
+        #endregion
     }
 }

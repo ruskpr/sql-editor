@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductEditor"
         mc:Ignorable="d"
-        Background="Silver"
+        Background="LightSteelBlue"
         WindowStartupLocation="CenterScreen"
-        Title="SQL Data Editor" Height="900" Width="1200" SizeChanged="Window_SizeChanged">
+        Title="SQL Data Editor" Height="900" Width="1200" ResizeMode="NoResize">
     <Grid x:Name="gridMain"  Height="900" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
         <Grid.RowDefinitions>
@@ -33,16 +33,13 @@
                 Height="25" 
                 Click="btnInsert_Click"/>
 
-        <!--data grid-->
+        <!--data grid - row (1)-->
         <DataGrid x:Name="dgRecords" 
                   Grid.Row="1" 
                   SelectionMode="Single" 
                   d:ItemsSource="{d:SampleData ItemCount=35}" 
                   Background="White"
                   HorizontalContentAlignment="Center"
-                  SelectedCellsChanged="dgRecords_SelectedCellsChanged" Margin="10,0,10,71"/>
-
-
-
+                  SelectedCellsChanged="dgRecords_SelectedCellsChanged" Margin="10,0,10,51"/>
     </Grid>
 </Window>

@@ -23,14 +23,17 @@ namespace SQLEditor
     /// </summary>
     public partial class RecordViewer : Window
     {
-
+        #region Delegate definition
+        public delegate void ItemUpdated();
+        public event ItemUpdated OnItemUpdated;
+        #endregion
+        #region Fields
         private object[] items;
-
         private string tableName;
         private string selColumn;
         private string selItem;
-
-        
+        #endregion
+        #region Constructor
         public RecordViewer(string tablename, DataGrid datagrid, object[] selectedItems)
         {
             InitializeComponent();
@@ -51,7 +54,8 @@ namespace SQLEditor
             lbSelectedItem.Content = "Selected Item: none";
             btnDeleteRecord.Content = $"Delete this from {this.tableName}";
         }
-
+        #endregion
+        #region
         private void InitializeDataGrid(string tablename, DataGrid datagrid, object[] selectedItems)
         {
             ///
@@ -79,8 +83,8 @@ namespace SQLEditor
         {
             lbCurrentTable.Content = $"Current Table: {tableName}";
             lbSelectedItem.Content = $"Selected Item: {selColumn}: '{selItem}' ";
-        }
-        private void dgRecordViewer_CurrentCellChanged(object sender, EventArgs e)
+        } // update labels 
+        private void dgRecordViewer_CurrentCellChanged(object sender, EventArgs e) // get selected cell value
         {
             try
             {
@@ -105,23 +109,24 @@ namespace SQLEditor
                         }
                     }
                 }
-                
             }
-            catch 
-            {
-            }
+            catch { }
             
-
             UpdateText();
         }
-
+        #endregion
         #region Button click events
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.DataLayer != null && tbNewValue.Text.Trim() != "")
             {
-                MainWindow.DataLayer.UpdateRecord(tableName, selColumn, dgRecordViewer, tbNewValue.Text);
-                this.Close();
+                bool success = MainWindow.DataLayer.UpdateRecord(tableName, selColumn, dgRecordViewer, tbNewValue.Text);
+                
+                if (success)
+                {
+                    this.Close();
+                    OnItemUpdated.Invoke();
+                } 
             }
             else if (tbNewValue.Text.Trim() == "")
             {
@@ -130,8 +135,6 @@ namespace SQLEditor
             }
 
         }
-        #endregion
-
         private void btnDeleteRecord_Click(object sender, RoutedEventArgs e)
         {
             if (dgRecordViewer.SelectedItems.Count > 0)
@@ -141,15 +144,17 @@ namespace SQLEditor
                     bool success = MainWindow.DataLayer.DeleteRecord(tableName, dgRecordViewer);
 
                     if (success)
+                    {
+                        OnItemUpdated.Invoke();
                         this.Close();
+                    }
                 }
             }
             else if (dgRecordViewer.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Select record above to confirm.");
             }
-            
-            
         }
+        #endregion
     }
 }

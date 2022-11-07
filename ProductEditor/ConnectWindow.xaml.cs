@@ -15,10 +15,6 @@ using System.Windows.Shapes;
 
 namespace ProductEditor
 {
-    /// <summary>
-    /// Interaction logic for ConnectWindow.xaml
-    /// </summary>
-
     public partial class ConnectWindow : Window
     {
         #region Delegates and Constructor
@@ -45,7 +41,7 @@ namespace ProductEditor
         #region GetConnection method
         /// <summary>
         /// make new instance of SQLDataLayer,
-        /// if it connects, pass datalayer to main window with delegate,
+        /// if it connects, pass datalayer to main window through delegate,
         /// if not, show error message
         /// </summary>
         private void GetConnection(SQLDataLayer datalayer) 

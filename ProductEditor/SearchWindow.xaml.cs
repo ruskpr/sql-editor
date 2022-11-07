@@ -75,7 +75,6 @@ namespace SQLEditor
             }
         }
         #endregion
-
         #region Click events
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -87,6 +86,5 @@ namespace SQLEditor
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Owner.Focus();
         #endregion
-
     }
 }

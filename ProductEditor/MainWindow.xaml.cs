@@ -79,7 +79,7 @@ namespace ProductEditor
             }
         } 
         private void cbTables_SelectionChanged(object sender, SelectionChangedEventArgs e) => DisplayAllRecords();
-        private object[] GetSelectedRow() // get items in selected row and pass it to record viewer interface
+        private object[] GetSelectedRow() // get items in selected row for passing to record viewer interface
         {
             object[] rowItems = new object[dgRecords.Columns.Count];
 
@@ -140,9 +140,6 @@ namespace ProductEditor
                 MessageBox.Show("Select a table from the dropdown menu above.", "SQL Data Editor");
             }
         }
-
-        
         #endregion
-
     }
 }

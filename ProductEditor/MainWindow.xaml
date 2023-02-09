@@ -5,50 +5,104 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductEditor"
         mc:Ignorable="d"
-        Background="LightSteelBlue"
+        Background="#FFEFEFEF"
         WindowStartupLocation="CenterScreen"
-        Title="SQL Data Editor" Height="900" Width="1200" ResizeMode="NoResize">
-    <Grid x:Name="gridMain"  Height="900" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        Title="SQL Data Editor"
+        Height="900"
+        Width="1200"
+        ResizeMode="CanResize"
+        MinWidth="900"
+        MinHeight="500">
+    <Grid x:Name="gridMain">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="8*"/>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+
         <!--row (0)-->
         <!--Server connection-->
-        <Label x:Name="lblCurrentConnection" Grid.Row="0" Content="[Connected / Not Connected]" HorizontalAlignment="Left" Margin="160,7,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="344"/>
-        <Button x:Name="btnConnectWindow" Grid.Row="0" Content="Connect to server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Click="btnConnect_Click"/>
+        <Grid Grid.Column="1"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <!--Table selection-->
-        <Label x:Name="lblSelectTable" Content="Select Table:" Tag="tableSelection" HorizontalAlignment="Right" Margin="0,8,152,0" VerticalAlignment="Top" Width="79" Grid.Row="0"/>
-        <ComboBox x:Name="cbTables" Tag="tableSelection" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="142" SelectionChanged="cbTables_SelectionChanged"/>
-        <!--Insert button-->
-        <Button x:Name="btnInsert" 
-                Content="Insert new" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Top" 
-                Margin="0,40,10,0" 
-                Grid.Row="0" 
-                Width="220" 
-                Height="25" 
-                Click="btnInsert_Click"/>
-        <Button x:Name="btnSearch" 
-                Content="Search" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Top" 
-                Margin="0,70,10,0" 
-                Grid.Row="0" 
-                Width="220" 
-                Height="25" Click="btnSearch_Click" 
-                />
+            <DockPanel Grid.Column="0">
+
+                <Button x:Name="btnConnectWindow"
+                        Content="Connect to server"
+                        HorizontalAlignment="Left"
+                        Margin="10,10,0,0"
+                        VerticalAlignment="Top"
+                        Width="134"
+                        Click="btnConnect_Click" />
+                <Label x:Name="lblCurrentConnection"
+                       Content="[Connected / Not Connected]"
+                       HorizontalAlignment="Left"
+                       Margin="10,7,0,0"
+                       VerticalAlignment="Top" />
+            </DockPanel>
+        </Grid>
+
+        <StackPanel Grid.Column="2"
+                    Margin="0,0,0,0"
+                    Width="300"
+                    HorizontalAlignment="Right">
+            <!--Table selection-->
+            <DockPanel HorizontalAlignment="Right">
+                <Label x:Name="lblSelectTable"
+                       Content="Select Table:"
+                       Tag="tableSelection"
+                       HorizontalAlignment="Right"
+                       Margin="0,8,10,0" />
+
+                <ComboBox x:Name="cbTables"
+                          Tag="tableSelection"
+                          Margin="0,10,0,0"
+                          VerticalAlignment="Top"
+                          Width="150"
+                          Height="23"
+                          SelectionChanged="cbTables_SelectionChanged" />
+            </DockPanel>
+            <!--Insert button-->
+            <Button x:Name="btnInsert"
+                    Content="Insert New"
+                    HorizontalAlignment="Right"
+                    Margin="0,5,0,0"
+                    Width="150"
+                    Height="23"
+                    Click="btnInsert_Click" />
+            <!--search button-->
+            <Button x:Name="btnSearch"
+                    Content="Search"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0,5,0,0"
+                    Grid.Row="0"
+                    Width="150"
+                    Height="23"
+                    Click="btnSearch_Click" />
+        </StackPanel>
 
         <!--data grid - row (1)-->
-        <DataGrid x:Name="dgRecords" 
-                  Grid.Row="1" 
-                  SelectionMode="Single" 
-                  d:ItemsSource="{d:SampleData ItemCount=35}" 
+        <DataGrid x:Name="dgRecords"
+                  Grid.Column="1"
+                  SelectionMode="Single"
+                  d:ItemsSource="{d:SampleData ItemCount=35}"
                   Background="White"
                   HorizontalContentAlignment="Center"
-                  SelectedCellsChanged="dgRecords_SelectedCellsChanged" Margin="10,0,10,51"/>
+                  SelectedCellsChanged="dgRecords_SelectedCellsChanged"
+                  Grid.ColumnSpan="2"
+                  Margin="0,96,0,0"
+                  Grid.RowSpan="2" />
     </Grid>
 </Window>

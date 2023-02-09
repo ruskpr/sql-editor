@@ -18,7 +18,7 @@ namespace ProductEditor
         public string connString { get; }
         #endregion
         #region Constructors (default / custom connection)
-        // default constructor
+        // default constructor (connection string from App.config file)
         public SQLDataLayer() =>
             connString = ConfigurationManager.ConnectionStrings["localconnection"].ConnectionString;
 
@@ -319,8 +319,7 @@ namespace ProductEditor
         }
         #endregion
         #region Override ToString()
-        public override string ToString() =>
-            $"server = '{ServerName}', database = '{DBName}'";
+        public override string ToString() => $"server = '{ServerName}', database = '{DBName}'";
         #endregion
     }
 }
